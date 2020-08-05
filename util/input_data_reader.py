@@ -1,7 +1,8 @@
 import os
 import h5py
+import numpy as np
 import pandas as pd
-from inout.event_to_image_converter import *
+import pofah.util.event_to_image_converter as eic
 import util.utility_fun as ut
 
 default_jet_feature_names = ['mJJ', 'j1Pt', 'j1Eta', 'j1Phi', 'j1M', 'j1E', 'j2Pt', 'j2M', 'j2E', 'DeltaEtaJJ', 'DeltaPhiJJ']
@@ -77,9 +78,9 @@ class InputDataReader():
         mjj_idx = dijet_feature_names.index('mJJ')
         events_j1, events_j2, dijet_features = ut.filter_arrays_on_value( events_j1, events_j2, dijet_features, filter_arr=dijet_features[:,mjj_idx], filter_val=mass_cut)
 
-        img_j1, img_j2 = convert_events_to_image(events_j1, events_j2, image_size)
+        img_j1, img_j2 = eic.convert_events_to_image(events_j1, events_j2, image_size)
         # normalize by pixel values from training
-        img_j1, img_j2 = normalize_by_jet_pt(img_j1, img_j2, dijet_features, dijet_feature_names)
+        img_j1, img_j2 = eic.normalize_by_jet_pt(img_j1, img_j2, dijet_features, dijet_feature_names)
         return [img_j1, img_j2, dijet_features, dijet_feature_names]
 
 
