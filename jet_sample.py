@@ -1,6 +1,6 @@
 import pandas as pd
 
-import inout.input_data_reader as idr
+import POfAH.util.input_data_reader as idr
 import inout.result_writer as rw
 
 """ module containing wrapper for a multijet sample (with N jets having M features in phase space) 
