@@ -1,7 +1,6 @@
 import os
 import h5py
 import pandas as pd
-import config.config as co
 from inout.event_to_image_converter import *
 import util.utility_fun as ut
 
@@ -71,16 +70,16 @@ class InputDataReader():
         return pd.DataFrame(features,columns=names)
 
 
-    def read_events_convert_to_images(self):
+    def read_events_convert_to_images(self, image_size=32, mass_cut=1100.0):
         events_j1, events_j2 = self.read_jet_constituents()
         dijet_features, dijet_feature_names = self.read_dijet_features()
         # cut on mass
         mjj_idx = dijet_feature_names.index('mJJ')
-        events_j1, events_j2, dijet_features = ut.filter_arrays_on_value( events_j1, events_j2, dijet_features, filter_arr=dijet_features[:,mjj_idx], filter_val=co.config['mass_cut'] )
+        events_j1, events_j2, dijet_features = ut.filter_arrays_on_value( events_j1, events_j2, dijet_features, filter_arr=dijet_features[:,mjj_idx], filter_val=mass_cut)
 
-        img_j1, img_j2 = convert_events_to_image(events_j1, events_j2, co.config['image_size'])
+        img_j1, img_j2 = convert_events_to_image(events_j1, events_j2, image_size)
         # normalize by pixel values from training
-        img_j1, img_j2 = normalize_by_jet_pt(img_j1, img_j2, dijet_features, dijet_feature_names )
+        img_j1, img_j2 = normalize_by_jet_pt(img_j1, img_j2, dijet_features, dijet_feature_names)
         return [img_j1, img_j2, dijet_features, dijet_feature_names]
 
 
