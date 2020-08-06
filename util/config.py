@@ -14,7 +14,7 @@ config = {
     #'input_dir' : 'data/images',
     'fig_dir' : 'fig',
     #'result_dir' : '/eos/user/k/kiwoznia/data/VAE_data/outputs/results',
-    'result_dir' : 'results',
+    'result_dir' : '/eos/home-k/kiwoznia/dev/autoencoder_for_anomaly/convolutional_VAE/results',
     'tensorboard_dir' : 'tensorboard',
     'model_dir' : 'models'
 
