@@ -1,6 +1,6 @@
 import pathlib
 import os
-import config.config as co
+import pofah.util.config as co
 
 class Experiment():
 

@@ -3,7 +3,7 @@ import h5py
 import numpy as np
 import pandas as pd
 import pofah.util.event_to_image_converter as eic
-import util.utility_fun as ut
+import pofah.util.utility_fun as ut
 
 default_jet_feature_names = ['mJJ', 'j1Pt', 'j1Eta', 'j1Phi', 'j1M', 'j1E', 'j2Pt', 'j2M', 'j2E', 'DeltaEtaJJ', 'DeltaPhiJJ']
 
