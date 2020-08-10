@@ -31,7 +31,7 @@ class JetSample():
         return cls(event_sample.name, jet_features)
         
     def __getitem__( self, key ):
-        return self.data[key]#.values
+        return self.data[key].values
     
     def __len__( self ):
         return len(self.data)
@@ -65,7 +65,7 @@ class JetSample():
         rw.write_jet_sample_to_file( dump_data.values, list(dump_data.columns), path )
         print('written data sample to {}'.format(path))
         
-    def title( self ):
+    def __repr__( self ):
         return self.name
     
     def plot_name( self ):
