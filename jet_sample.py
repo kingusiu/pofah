@@ -46,13 +46,13 @@ class JetSample():
         if 'sel' not in self.data:
             print('selection not available for this data sample')
             return
-        return self.data[self.data['sel']][feature] if feature else self.data[self.data['sel']]
+        return self.data[self.data['sel']][feature].values if feature else self.data[self.data['sel']]
         
     def rejected( self, feature=None ):
         if 'sel' not in self.data:
             print('selection not performed for this data sample')
             return
-        return self.data[~self.data['sel']][feature] if feature else self.data[~self.data['sel']]
+        return self.data[~self.data['sel']][feature].values if feature else self.data[~self.data['sel']]
     
     def describe( self, feature ):
         print('mean = {0:.2f}, min = {1:.2f}, max = {2:.2f}'.format(self.data[feature].mean(),self.data[feature].min(), self.data[feature].max()))
