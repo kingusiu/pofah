@@ -16,6 +16,6 @@ config = {
     #'result_dir' : '/eos/user/k/kiwoznia/data/VAE_data/outputs/results',
     'result_dir' : '/eos/home-k/kiwoznia/dev/autoencoder_for_anomaly/convolutional_VAE/results',
     'tensorboard_dir' : 'tensorboard',
-    'model_dir' : 'models'
-
+    'model_dir' : 'models',
+    'analysis_base_dir': '/eos/home-k/kiwoznia/data/VAE_results/bump_hunt_results'
 }

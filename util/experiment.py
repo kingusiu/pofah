@@ -11,8 +11,9 @@ class Experiment():
         self.model_dir = os.path.join(co.config['model_dir'], self.run_dir)
         self.fig_dir = os.path.join(co.config['fig_dir'], self.run_dir)
         self.fig_dir_event = os.path.join(self.fig_dir,'analysis_event')
+        self.analysis_dir = os.path.join(co.config['analysis_base_dir'], self.run_dir)
 
-    def setup(self, fig_dir=False, result_dir=False, tensorboard_dir=False, model_dir=False):
+    def setup(self, fig_dir=False, result_dir=False, tensorboard_dir=False, model_dir=False, analysis_dir=False):
 
         if fig_dir:
             pathlib.Path(self.fig_dir).mkdir(parents=True, exist_ok=True)
@@ -29,5 +30,8 @@ class Experiment():
 
         if model_dir:
             pathlib.Path(self.model_dir).mkdir(parents=True, exist_ok=True)
+
+        if analysis_dir:
+            pathlib.Path(self.analysis_dir).mkdir(parents=True, exist_ok=True)
 
         return self
