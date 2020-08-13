@@ -71,3 +71,16 @@ class JetSample():
     def plot_name( self ):
         return self.name.replace(' ','_')
         
+
+def split_jet_sample_train_test(jet_sample, frac):
+    
+    """ shuffles and splits dataset into training-set and testing-set accorinding to fraction frac """
+    
+    df_copy = jet_sample.data.copy()
+
+    N = df_copy.shape[0]
+    shuffled = df_copy.sample(frac=1.).reset_index(drop=True) # shuffle original data
+    first = shuffled[:int(N*frac)].reset_index(drop=True)
+    second = shuffled[int(N*frac):].reset_index(drop=True)
+    
+    return [JetSample(jet_sample.name+'Train', first), JetSample(jet_sample.name+'Test', second)]
