@@ -66,9 +66,18 @@ class SamplePathFactory():
     def qcd_path(self):
         return self.qcd_file_path
 
+    @property
+    def qcd_sig_path(self):
+        if self.mode == 'particle'
+            return os.path.join(self.input_dir, sd.file_names['qcdSig']+'_mjj_cut_concat_2M.h5')
+        return os.path.join(self.input_dir,sd.file_names['qcdSig']+self.sample_suffix)
+    
+
     def sample_path(self,id):
         if id == 'qcdSide':
             return self.qcd_path
+        if id == 'qcdSig':
+            return self.qcd_sig_path
         return os.path.join(self.input_dir,sd.file_names[id]+self.sample_suffix)
 
     def result_path(self,id):
