@@ -1,6 +1,6 @@
 import os
 from collections import OrderedDict
-import pofah.path_constants_sample_dict as sd
+import pofah.path_constants.sample_dict as sd
 import pofah.jet_sample as js
 
 
@@ -36,7 +36,7 @@ class SamplePathFactory():
 
     @classmethod
     def from_path_dict(cls, path_dict):
-
+        pass
 
 
     def init_img(self, pix_suffix=None):
@@ -78,7 +78,7 @@ class SamplePathFactory():
         return os.path.join(self.input_dir,sd.file_names['qcdSig']+self.sample_suffix)
     
 
-    def sample_path(self,id):
+    def sample_path(self, id):
         if id == 'qcdSide':
             return self.qcd_path
         if id == 'qcdSig':
