@@ -52,6 +52,9 @@ class InputDataReader():
             return [ n.decode("utf-8") for n in np.asarray(f.get(key)) ]
 
     def read_jet_constituents(self, with_names=True):
+        '''
+            returns jet constituents of jet1 and jet2 as tuple
+        '''
         data = np.asarray(self.read_data( self.particles_key ), dtype='float32')
         if with_names:
             return [data[:, 0, :, :], data[:, 1, :, :]], self.read_string_data(self.particles_names_key)

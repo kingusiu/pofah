@@ -1,6 +1,6 @@
 import os
 from collections import OrderedDict
-import pofah.sample_dict as sd
+import pofah.path_constants_sample_dict as sd
 import pofah.jet_sample as js
 
 
@@ -16,7 +16,7 @@ class SamplePathFactory():
         'particle-local': sd.base_dir_events_local,
     }
 
-    def __init__(self,experiment,mode='default'):
+    def __init__(self, experiment, mode='default'):
         self.mode = mode
         self.input_dir = self.path_dict[self.mode]
         self.result_dir = experiment.result_dir
@@ -34,6 +34,11 @@ class SamplePathFactory():
             self.init_particle()
 
 
+    @classmethod
+    def from_path_dict(cls, path_dict):
+
+
+
     def init_img(self, pix_suffix=None):
         self.qcd_file_path = os.path.join(self.input_dir,'qcd_sqrtshatTeV_13TeV_PU40_SIDEBAND_mjj_cut_concat_1.2M_pt_img.h5')
         self.sample_suffix = '_mjj_cut_concat_200K_pt_img.h5'
@@ -45,7 +50,7 @@ class SamplePathFactory():
     def init_default(self):
         pass
 
-    def init_img_local(self,experiment):
+    def init_img_local(self, experiment):
         self.qcd_file_path = os.path.join(self.input_dir,'qcd_sqrtshatTeV_13TeV_PU40_SIDEBAND_img_20K.h5')
         self.sample_suffix = '_mjj_cut_concat_10K_pt_img.h5'
         self.result_dir = os.path.join(sd.base_dir_results_local, experiment.run_dir)
@@ -68,7 +73,7 @@ class SamplePathFactory():
 
     @property
     def qcd_sig_path(self):
-        if self.mode == 'particle'
+        if self.mode == 'particle':
             return os.path.join(self.input_dir, sd.file_names['qcdSig']+'_mjj_cut_concat_2M.h5')
         return os.path.join(self.input_dir,sd.file_names['qcdSig']+self.sample_suffix)
     
