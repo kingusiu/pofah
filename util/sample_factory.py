@@ -2,7 +2,6 @@ import os
 from collections import OrderedDict
 import pofah.path_constants.sample_dict as sd
 import pofah.jet_sample as js
-import sarewt.data_reader as dr
 
 
 class SamplePathFactory():
@@ -33,13 +32,6 @@ class SamplePathFactory():
             self.init_particle_local()
         if self.mode == 'particle':
             self.init_particle()
-
-
-    @classmethod
-    def from_path_dict(cls, path_dict):
-        self.mode = 'default'
-        self.input_dir = path_dict.base_dir
-
 
 
     def init_img(self, pix_suffix=None):
@@ -93,15 +85,14 @@ class SamplePathFactory():
 
 
 
-
-
 class SamplePathDirFactory():
 
     def __init__(self, path_dict):
-        self.input_dir = path_dict.base_dir
+        self.base_dir = path_dict['base_dir']
+        self.sample_dir = path_dict['sample_dir']
 
     def sample_path(self, id):
-        return os.path.join(self.input_dir)
+        return os.path.join(self.base_dir, self.sample_dir[id])
 
 
 
@@ -121,8 +112,8 @@ def read_inputs_to_jet_sample_dict(sample_ids, experiment, mode='default'):
     paths = SamplePathFactory(experiment, mode=mode)  # 'default' datasample
     return read_data_to_jet_sample_dict(sample_ids, paths.sample_path)
 
-def read_inputs_to_jet_sample_dict_from_dir(sample_ids, sample_factory):
+def read_inputs_to_jet_sample_dict_from_dir(sample_ids, paths):
     data = OrderedDict()
     for sample_id in sample_ids:
-        data[sample_id] = 
-
+        data[sample_id] = js.JetSample.from_input_dir(sample_id, paths.sample_path(sample_id))
+    return data

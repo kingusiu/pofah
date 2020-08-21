@@ -28,7 +28,7 @@ class JetSample():
 
     @classmethod
     def from_input_dir(cls, name, path):
-        features, names = dr.DataReader(path).read_jet_features_from_dir_to_df()
+        df = dr.DataReader(path).read_jet_features_from_dir_to_df()
         if 'sel' in df:  # convert selection column to bool
             df['sel'] = df['sel'].astype(bool)
         return cls(name, df)
