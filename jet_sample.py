@@ -1,6 +1,7 @@
 import pandas as pd
 
 import pofah.util.input_data_reader as idr
+import sarewt.data_reader as dr
 import pofah.util.result_writer as rw
 
 """ module containing wrapper for a multijet sample (with N jets having M features in phase space) 
@@ -21,6 +22,13 @@ class JetSample():
     @classmethod
     def from_input_file(cls, name, path):
         df = idr.InputDataReader(path).read_dijet_features_to_df()
+        if 'sel' in df:  # convert selection column to bool
+            df['sel'] = df['sel'].astype(bool)
+        return cls(name, df)
+
+    @classmethod
+    def from_input_dir(cls, name, path):
+        features, names = dr.DataReader(path).read_jet_features_from_dir_to_df()
         if 'sel' in df:  # convert selection column to bool
             df['sel'] = df['sel'].astype(bool)
         return cls(name, df)
