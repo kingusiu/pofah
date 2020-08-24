@@ -3,7 +3,7 @@ import pandas as pd
 import os
 import pofah.util.input_data_reader as idr
 import pofah.util.result_writer as rw
-import pofah.sample_dict as sd
+import pofah.path_constants.sample_dict as sd
 
 
 class EventSample():
