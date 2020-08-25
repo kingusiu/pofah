@@ -1,15 +1,17 @@
 import os
 
-base_dir_events = '/eos/user/k/kiwoznia/data/VAE_data/concat_events'
-base_dir_images = '/eos/user/k/kiwoznia/data/VAE_data/march_2020_data/input/images'
-base_dir_results = '/eos/home-k/kiwoznia/dev/autoencoder_for_anomaly/convolutional_VAE/results'
+path_dict = {
 
-base_dir_events_local = 'data/events'
-base_dir_images_local = 'data/images'
-base_dir_results_local = 'results'
+        'base_dir_events' : '/eos/user/k/kiwoznia/data/VAE_data/concat_events',
+        'base_dir_images' : '/eos/user/k/kiwoznia/data/VAE_data/march_2020_data/input/images',
+        'base_dir_results' : '/eos/home-k/kiwoznia/dev/autoencoder_for_anomaly/convolutional_VAE/results',
+
+        'base_dir_events_local' : 'data/events',
+        'base_dir_images_local' : 'data/images',
+        'base_dir_results_local' : 'results',
 
 
-file_names = {
+        'file_names' : {
                 'qcdSide': 'qcd_sqrtshatTeV_13TeV_PU40_SIDEBAND',
                 'qcdSideReco': 'qcd_sqrtshatTeV_13TeV_PU40_SIDEBAND_reco',
                 'qcdSig': 'qcd_sqrtshatTeV_13TeV_PU40',
@@ -34,9 +36,9 @@ file_names = {
                 'GtoWW35brReco': 'RSGraviton_WW_BROAD_13TeV_PU40_3.5TeV_reco',
                 'GtoWW45naReco': 'RSGraviton_WW_NARROW_13TeV_PU40_4.5TeV_reco',
                 'GtoWW45brReco': 'RSGraviton_WW_BROAD_13TeV_PU40_4.5TeV_reco',
-}
+        },
 
-sample_name = {
+        'sample_name' : {
                 'qcdSide': 'QCD side',
                 'qcdSideReco': 'QCD side reco',
                 'qcdSig': 'QCD signalregion',
@@ -61,4 +63,6 @@ sample_name = {
                 'GtoWW35brReco': r'$G(3.5 TeV)\to WW$ broad reco',
                 'GtoWW45naReco': r'$G(4.5 TeV)\to WW$ narrow reco',
                 'GtoWW45brReco': r'$G(4.5 TeV)\to WW$ broad reco',
+        }
+
 }

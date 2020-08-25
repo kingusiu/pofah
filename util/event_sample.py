@@ -16,7 +16,7 @@ class EventSample():
         :param event_features: N x F_n features (pandas dataframe)
         '''
         self.name = name
-        self.file_name = sd.file_names[self.name]+'.h5'
+        self.file_name = sd.path_dict['file_names'][self.name]+'.h5'
         self.particles = np.asarray(particles) # numpy array [ 2 (jets) x N events x 100 particles x 3 features ]
         self.particle_feature_names = particle_feature_names
         self.event_features = pd.DataFrame(event_features) # dataframe: names = columns
@@ -38,7 +38,6 @@ class EventSample():
         self.event_features[label] = value
 
     def dump(self,path):
-        path = os.path.join(path,self.file_name)
         particles = np.stack((self.particles[0],self.particles[1]), axis=1) # particles in input files stored as ( N x 2 jets x 100 particles x 3 features )
         rw.write_event_sample_to_file(particles, self.event_features.values, self.particle_feature_names, list(self.event_features.columns), path)
 

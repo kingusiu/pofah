@@ -1,5 +1,6 @@
 import os
 from collections import OrderedDict
+import pathlib
 import pofah.path_constants.sample_dict as sd
 import pofah.jet_sample as js
 
@@ -7,13 +8,13 @@ import pofah.jet_sample as js
 class SamplePathFactory():
 
     path_dict = {
-        'default': sd.base_dir_events,
-        'img': sd.base_dir_images,
-        'img-54': os.path.join(sd.base_dir_images,'54px'),
-        'particle': sd.base_dir_events,
-        'img-local': sd.base_dir_images_local,
-        'img-local-54': sd.base_dir_images_local,
-        'particle-local': sd.base_dir_events_local,
+        'default': sd.path_dict['base_dir_events'],
+        'img': sd.path_dict['base_dir_images'],
+        'img-54': os.path.join(sd.path_dict['base_dir_images'],'54px'),
+        'particle': sd.path_dict['base_dir_events'],
+        'img-local': sd.path_dict['base_dir_images_local'],
+        'img-local-54': sd.path_dict['base_dir_images_local'],
+        'particle-local': sd.path_dict['base_dir_events_local'],
     }
 
     def __init__(self, experiment, mode='default'):
@@ -48,14 +49,14 @@ class SamplePathFactory():
     def init_img_local(self, experiment):
         self.qcd_file_path = os.path.join(self.input_dir,'qcd_sqrtshatTeV_13TeV_PU40_SIDEBAND_img_20K.h5')
         self.sample_suffix = '_mjj_cut_concat_10K_pt_img.h5'
-        self.result_dir = os.path.join(sd.base_dir_results_local, experiment.run_dir)
+        self.result_dir = os.path.join(sd.path_dict['base_dir_results_local'], experiment.run_dir)
 
     def init_img_local_54(self):
-        self.qcd_file_path = os.path.join(self.input_dir, sd.file_names['qcdSide']+'_mjj_cut_20K_pt_img_54px.h5')
+        self.qcd_file_path = os.path.join(self.input_dir, sd.path_dict['file_names']['qcdSide']+'_mjj_cut_20K_pt_img_54px.h5')
         self.sample_suffix = '_mjj_cut_10K_pt_img_54px.h5'
 
     def init_particle(self):
-        self.qcd_file_path = os.path.join(self.input_dir, sd.file_names['qcdSide']+'_concat_1.5M.h5')
+        self.qcd_file_path = os.path.join(self.input_dir, sd.path_dict['file_names']['qcdSide']+'_concat_1.5M.h5')
         self.sample_suffix = '_mjj_cut_concat_200K.h5'
 
     def init_particle_local(self):
@@ -69,8 +70,8 @@ class SamplePathFactory():
     @property
     def qcd_sig_path(self):
         if self.mode == 'particle':
-            return os.path.join(self.input_dir, sd.file_names['qcdSig']+'_mjj_cut_concat_2M.h5')
-        return os.path.join(self.input_dir,sd.file_names['qcdSig']+self.sample_suffix)
+            return os.path.join(self.input_dir, sd.path_dict['file_names']['qcdSig']+'_mjj_cut_concat_2M.h5')
+        return os.path.join(self.input_dir,sd.path_dict['file_names']['qcdSig']+self.sample_suffix)
     
 
     def sample_path(self, id):
@@ -78,22 +79,29 @@ class SamplePathFactory():
             return self.qcd_path
         if id == 'qcdSig':
             return self.qcd_sig_path
-        return os.path.join(self.input_dir,sd.file_names[id]+self.sample_suffix)
+        return os.path.join(self.input_dir,sd.path_dict['file_names'][id]+self.sample_suffix)
 
     def result_path(self,id):
-        return os.path.join(self.result_dir,sd.file_names[id]+'.h5')
-
+        return os.path.join(self.result_dir,sd.path_dict['file_names'][id]+'.h5')
 
 
 class SamplePathDirFactory():
 
-    def __init__(self, path_dict):
-        self.base_dir = path_dict['base_dir']
+    def __init__(self, path_dict, experiment=None):
+        self.input_base_dir = path_dict['input_base_dir']
+        if experiment:
+            self.result_base_dir = experiment.result_dir
+        else:
+            self.result_base_dir = path_dict['result_base_dir'] 
         self.sample_dir = path_dict['sample_dir']
 
     def sample_path(self, id):
-        return os.path.join(self.base_dir, self.sample_dir[id])
+        return os.path.join(self.input_base_dir, self.sample_dir[id])
 
+    def result_path(self, id):
+        result_dir = os.path.join(self.result_base_dir, self.sample_dir[id])
+        pathlib.Path(result_dir).mkdir(parents=True, exist_ok=True) # have to create result directory for each sample here, not optimal, TODO: fix
+        return result_dir
 
 
 ##### utility functions
