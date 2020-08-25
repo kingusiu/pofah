@@ -91,13 +91,14 @@ class SamplePathDirFactory():
         self.input_base_dir = path_dict['base_dir']
         self.sample_dir = path_dict['sample_dir']
 
-    def sample_path(self, id):
-        return os.path.join(self.input_base_dir, self.sample_dir[id])
+    def extend_base_path(self, extention):
+        self.input_base_dir = os.path.join(self.input_base_dir, extention)
+        return self
 
-    def result_path(self, id):
-        result_dir = os.path.join(self.result_base_dir, self.sample_dir[id])
-        pathlib.Path(result_dir).mkdir(parents=True, exist_ok=True) # have to create result directory for each sample here, not optimal, TODO: fix
-        return result_dir
+    def sample_path(self, id):
+        s_path = os.path.join(self.input_base_dir, self.sample_dir[id])
+        pathlib.Path(s_path).mkdir(parents=True, exist_ok=True) # have to create result directory for each sample here, not optimal, TODO: fix
+        return s_path
 
 
 ##### utility functions
