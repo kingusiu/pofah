@@ -87,12 +87,8 @@ class SamplePathFactory():
 
 class SamplePathDirFactory():
 
-    def __init__(self, path_dict, experiment=None):
-        self.input_base_dir = path_dict['input_base_dir']
-        if experiment:
-            self.result_base_dir = experiment.result_dir
-        else:
-            self.result_base_dir = path_dict['result_base_dir'] 
+    def __init__(self, path_dict):
+        self.input_base_dir = path_dict['base_dir']
         self.sample_dir = path_dict['sample_dir']
 
     def sample_path(self, id):
