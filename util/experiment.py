@@ -20,9 +20,6 @@ class Experiment():
             pathlib.Path(self.fig_dir_img).mkdir(parents=True, exist_ok=True)
             pathlib.Path(self.fig_dir_event).mkdir(parents=True, exist_ok=True)
 
-        if result_dir:
-            pathlib.Path(self.result_dir).mkdir(parents=True, exist_ok=True)
-
         if tensorboard_dir:
             self.tensorboard_dir = os.path.join(co.config['tensorboard_dir'], self.run_dir)
             pathlib.Path(self.tensorboard_dir).mkdir(parents=True, exist_ok=True)
