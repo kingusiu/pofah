@@ -1,14 +1,12 @@
 import pathlib
 import os
 import pofah.util.config as co
-import pofah.path_constants.sample_dict as sd
 
 class Experiment():
 
-    def __init__(self, run_n=0, path_dict=sd.path_dict):
+    def __init__(self, run_n=0):
         self.run_n = run_n
         self.run_dir = 'run_' + str(self.run_n)
-        self.result_dir = os.path.join(path_dict['result_base_dir'], self.run_dir)
         self.model_dir = os.path.join(co.config['model_dir'], self.run_dir)
         self.fig_dir = os.path.join(co.config['fig_dir'], self.run_dir)
         self.fig_dir_event = os.path.join(self.fig_dir,'analysis_event')
