@@ -28,6 +28,9 @@ class Experiment():
             pathlib.Path(self.model_dir).mkdir(parents=True, exist_ok=True)
 
         if analysis_dir:
-            pathlib.Path(self.analysis_dir).mkdir(parents=True, exist_ok=True)
+            self.analysis_dir_fig = os.path.join(self.analysis_dir, 'fig')
+            self.analysis_dir_bin_count = os.path.join(self.analysis_dir, 'bin_count')
+            pathlib.Path(self.analysis_dir_fig).mkdir(parents=True, exist_ok=True)
+            pathlib.Path(self.analysis_dir_bin_count).mkdir(parents=True, exist_ok=True)
 
         return self
