@@ -1,6 +1,7 @@
+import copy
 import pofah.path_constants.sample_dict as sd
 
-path_dict = sd.path_dict
+path_dict = copy.deepcopy(sd.path_dict)
 
 
 update_dict = {
