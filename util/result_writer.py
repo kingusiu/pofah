@@ -25,10 +25,10 @@ def write_event_sample_to_file(particles, event_features, particle_feature_names
         f.create_dataset(jet_feature_names_key, data=[n.encode('utf-8') for n in event_feature_names])
 
 
-def write_bin_counts_to_file(datasamples, bincounts, bin_edges, file_path):
+def write_bin_counts_to_file(counting_exp_dict, bin_edges, file_path):
     with h5py.File( file_path, 'w' ) as file_bin_counts:
-        for sample, counts in zip(datasamples, bincounts):
+        for sample, counts in counting_exp_dict.items():
             file_bin_counts.create_dataset(sample, data=counts)
-        file_bin_counts.create_dataset('bin_count_labels',data=['total','sig-like','bg-like'])
+        file_bin_counts.create_dataset('bin_count_labels',data=[n.encode("utf-8") for n in ['total','sig-like','bg-like']])
         file_bin_counts.create_dataset('bin_edges',data=bin_edges)
 

@@ -10,6 +10,8 @@ update_dict = {
 
 	'sample_dir' : {
 		'qcdSigReco': 'qcd_sqrtshatTeV_13TeV_PU40_parts',
+                'qcdSigBisReco': 'qcd_sqrtshatTeV_13TeV_PU40_BIS_parts',
+                'qcdSigAllReco': 'qcd_sqrtshatTeV_13TeV_PU40_ALL_parts',
                 'GtoWW15naReco': 'RSGraviton_WW_NARROW_13TeV_PU40_1.5TeV_parts',
                 'GtoWW15brReco': 'RSGraviton_WW_BROAD_13TeV_PU40_1.5TeV_parts',
                 'GtoWW25naReco': 'RSGraviton_WW_NARROW_13TeV_PU40_2.5TeV_parts',
