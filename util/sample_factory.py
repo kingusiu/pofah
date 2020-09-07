@@ -92,7 +92,7 @@ class SamplePathDirFactory():
         self.sample_dir = path_dict['sample_dir']
 
     def extend_base_path(self, extention):
-        self.input_base_dir = os.path.join(self.input_base_dir, extention)
+        self.input_base_dir = self.input_base_dir.replace('$EXTENTION$', extention)
         return self
 
     def sample_path(self, id):

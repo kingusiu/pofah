@@ -16,6 +16,7 @@ path_dict = {
                 'qcdSideReco': 'qcd_sqrtshatTeV_13TeV_PU40_SIDEBAND_reco',
                 'qcdSig': 'qcd_sqrtshatTeV_13TeV_PU40',
                 'qcdSigBis': 'qcd_sqrtshatTeV_13TeV_PU40_BIS',
+                'qcdSigBisReco': 'qcd_sqrtshatTeV_13TeV_PU40_BIS_reco',
                 'qcdSigAll': 'qcd_sqrtshatTeV_13TeV_PU40_ALL',
                 'qcdSigReco': 'qcd_sqrtshatTeV_13TeV_PU40_reco',
                 'GtoWW15na': 'RSGraviton_WW_NARROW_13TeV_PU40_1.5TeV',

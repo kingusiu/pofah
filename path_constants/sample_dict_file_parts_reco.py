@@ -6,7 +6,7 @@ path_dict = copy.deepcopy(sd.path_dict)
 
 update_dict = {
 	
-        'base_dir' : '/eos/home-k/kiwoznia/dev/autoencoder_for_anomaly/convolutional_VAE/results',
+        'base_dir' : '/eos/home-k/kiwoznia/dev/autoencoder_for_anomaly/convolutional_VAE/results/$EXTENTION$',
 
 	'sample_dir' : {
 		'qcdSigReco': 'qcd_sqrtshatTeV_13TeV_PU40_parts',
