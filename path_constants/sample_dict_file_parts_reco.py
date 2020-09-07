@@ -9,6 +9,9 @@ update_dict = {
         'base_dir' : '/eos/home-k/kiwoznia/dev/autoencoder_for_anomaly/convolutional_VAE/results/$EXTENTION$',
 
 	'sample_dir' : {
+                'qcdSideReco': 'qcd_sqrtshatTeV_13TeV_PU40_SIDEBAND_parts',
+                'qcdSideBisReco': 'qcd_sqrtshatTeV_13TeV_PU40_SIDEBAND_BIS_parts',
+                'qcdSideAllReco': 'qcd_sqrtshatTeV_13TeV_PU40_SIDEBAND_ALL_parts',
 		'qcdSigReco': 'qcd_sqrtshatTeV_13TeV_PU40_parts',
                 'qcdSigBisReco': 'qcd_sqrtshatTeV_13TeV_PU40_BIS_parts',
                 'qcdSigAllReco': 'qcd_sqrtshatTeV_13TeV_PU40_ALL_parts',
