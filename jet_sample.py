@@ -4,7 +4,7 @@ import pofah.util.input_data_reader as idr
 import sarewt.data_reader as dr
 import pofah.util.result_writer as rw
 
-""" module containing wrapper for a multijet sample (with N jets having M features in phase space) 
+""" module containing wrapper for a dijet sample (with 2 jets having M features in phase space) 
     ['mJJ', 'j1Pt', 'j1Eta', 'j1Phi', 'j1M', 'j1E', 'j2Pt', 'j2M', 'j2E', 'DeltaEtaJJ', 'DeltaPhiJJ', 'j1TotalLoss', 'j1RecoLoss', 'j1KlLoss', 'j2TotalLoss', 'j2RecoLoss', 'j2KlLoss']
 """
 

@@ -13,10 +13,8 @@ path_dict = {
 
         'file_names' : {
                 'qcdSide': 'qcd_sqrtshatTeV_13TeV_PU40_SIDEBAND',
-                'qcdSideReco': 'qcd_sqrtshatTeV_13TeV_PU40_SIDEBAND_reco',
                 'qcdSig': 'qcd_sqrtshatTeV_13TeV_PU40',
                 'qcdSigBis': 'qcd_sqrtshatTeV_13TeV_PU40_BIS',
-                'qcdSigBisReco': 'qcd_sqrtshatTeV_13TeV_PU40_BIS_reco',
                 'qcdSigAll': 'qcd_sqrtshatTeV_13TeV_PU40_ALL',
                 'qcdSigReco': 'qcd_sqrtshatTeV_13TeV_PU40_reco',
                 'GtoWW15na': 'RSGraviton_WW_NARROW_13TeV_PU40_1.5TeV',
@@ -29,6 +27,9 @@ path_dict = {
                 'GtoWW35br': 'RSGraviton_WW_BROAD_13TeV_PU40_3.5TeV',
                 'GtoWW45na': 'RSGraviton_WW_NARROW_13TeV_PU40_4.5TeV',
                 'GtoWW45br': 'RSGraviton_WW_BROAD_13TeV_PU40_4.5TeV',
+                'qcdSideReco': 'qcd_sqrtshatTeV_13TeV_PU40_SIDEBAND_reco',
+                'qcdSigBisReco': 'qcd_sqrtshatTeV_13TeV_PU40_BIS_reco',
+                'qcdSigAllReco': 'qcd_sqrtshatTeV_13TeV_PU40_ALL_reco',
                 'GtoWW15naReco': 'RSGraviton_WW_NARROW_13TeV_PU40_1.5TeV_reco',
                 'GtoWW15brReco': 'RSGraviton_WW_BROAD_13TeV_PU40_1.5TeV_reco',
                 'GtoWW25naReco': 'RSGraviton_WW_NARROW_13TeV_PU40_2.5TeV_reco',
