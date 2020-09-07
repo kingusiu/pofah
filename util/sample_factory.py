@@ -90,15 +90,19 @@ class SamplePathDirFactory():
     def __init__(self, path_dict):
         self.input_base_dir = path_dict['base_dir']
         self.sample_dir = path_dict['sample_dir']
+        self.sample_file = path_dict['file_names']
 
     def extend_base_path(self, extention):
         self.input_base_dir = self.input_base_dir.replace('$EXTENTION$', extention)
         return self
 
-    def sample_path(self, id):
+    def sample_dir_path(self, id):
         s_path = os.path.join(self.input_base_dir, self.sample_dir[id])
         pathlib.Path(s_path).mkdir(parents=True, exist_ok=True) # have to create result directory for each sample here, not optimal, TODO: fix
         return s_path
+
+    def sample_file_path(self, id):
+        return os.path.join(self.input_base_dir, self.sample_dir[id], self.sample_file[id]+'.h5')
 
 
 ##### utility functions
@@ -120,5 +124,5 @@ def read_inputs_to_jet_sample_dict(sample_ids, experiment, mode='default'):
 def read_inputs_to_jet_sample_dict_from_dir(sample_ids, paths):
     data = OrderedDict()
     for sample_id in sample_ids:
-        data[sample_id] = js.JetSample.from_input_dir(sample_id, paths.sample_path(sample_id))
+        data[sample_id] = js.JetSample.from_input_dir(sample_id, paths.sample_dir_path(sample_id))
     return data
