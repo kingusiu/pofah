@@ -38,8 +38,9 @@ class JetSample():
         jet_features = event_sample.get_event_features()
         return cls(event_sample.name, jet_features)
         
-    def __getitem__( self, key ):
-        return self.data[key].values
+    def __getitem__(self, key):
+        ''' return numpy array of values if single key is passed, else whole dataframe subslice with column names if list of strings is passed '''
+        return self.data[key].values if isinstance(key, str) else self.data[key]
     
     def __len__( self ):
         return len(self.data)
