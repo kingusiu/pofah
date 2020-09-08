@@ -10,9 +10,15 @@ import pofah.util.result_writer as rw
 
 class JetSample():
     
-    def __init__( self, name, data ):
+    def __init__(self, name, data, title=None):
+        '''
+            name = sample id (used in path dicts)
+            data = jet features as pandas dataframe
+            title = string used for plot titles
+        '''
         self.name = name
         self.data = data # assuming data passed as dataframe
+        self.title = name if title is None else title
 
     @classmethod
     def from_feature_array(cls, name, features, feature_names):
@@ -39,8 +45,14 @@ class JetSample():
         return cls(event_sample.name, jet_features)
         
     def __getitem__(self, key):
-        ''' return numpy array of values if single key is passed, else whole dataframe subslice with column names if list of strings is passed '''
-        return self.data[key].values if isinstance(key, str) else self.data[key]
+        ''' return numpy array of values if single key is passed, else whole dataframe subslice with column names if list of strings is passed: 
+            sample['key'] returns numpy array holding values(!) of column 'key'
+            sample[['key']] returns dataframe with single column 'key'
+        '''
+        if isinstance(key, str):
+            return self.data[key].values 
+        [k] = key # extract elements from list
+        return self.data[k]
     
     def __len__( self ):
         return len(self.data)

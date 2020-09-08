@@ -36,7 +36,10 @@ class Experiment():
             pathlib.Path(self.analysis_dir_bin_count).mkdir(parents=True, exist_ok=True)
 
         if model_analysis_dir:
-            pathlib.Path(self.model_analysis_dir).mkdir(parents=True, exist_ok=True)
+            self.model_analysis_dir_roc = os.path.join(self.model_analysis_dir, 'roc')
+            self.model_analysis_dir_loss = os.path.join(self.model_analysis_dir, 'loss')
+            pathlib.Path(self.model_analysis_dir_roc).mkdir(parents=True, exist_ok=True)
+            pathlib.Path(self.model_analysis_dir_loss).mkdir(parents=True, exist_ok=True)
         
         return self
 
