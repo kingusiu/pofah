@@ -3,6 +3,7 @@ from collections import OrderedDict
 import pathlib
 import pofah.path_constants.sample_dict as sd
 import pofah.jet_sample as js
+import pofah.util.utility_fun as utfu
 
 
 class SamplePathFactory():
@@ -88,21 +89,21 @@ class SamplePathFactory():
 class SamplePathDirFactory():
 
     def __init__(self, path_dict):
-        self.input_base_dir = path_dict['base_dir']
+        self.base_dir = path_dict['base_dir']
         self.sample_dir = path_dict['sample_dir']
         self.sample_file = path_dict['file_names']
 
-    def extend_base_path(self, extention):
-        self.input_base_dir = self.input_base_dir.replace('$EXTENTION$', extention)
+    def update_base_path(self, repl_dict):
+        self.base_dir = utfu.multi_replace(self.base_dir, repl_dict)
         return self
 
     def sample_dir_path(self, id):
-        s_path = os.path.join(self.input_base_dir, self.sample_dir[id])
+        s_path = os.path.join(self.base_dir, self.sample_dir[id])
         pathlib.Path(s_path).mkdir(parents=True, exist_ok=True) # have to create result directory for each sample here, not optimal, TODO: fix
         return s_path
 
     def sample_file_path(self, id):
-        return os.path.join(self.input_base_dir, self.sample_dir[id], self.sample_file[id]+'.h5')
+        return os.path.join(self.base_dir, self.sample_dir[id], self.sample_file[id]+'.h5')
 
 
 ##### utility functions
