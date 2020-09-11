@@ -43,3 +43,9 @@ class Experiment():
         
         return self
 
+    def setup_model_comparison_dir(self, model1, model2):
+        self.model_comparison_dir = os.path.join(co.config['model_analysis_base_dir'], 'run_'+str(model1)+'_vs_run_'+str(model2)) 
+        self.model_analysis_dir_roc = os.path.join(self.model_comparison_dir, 'roc')
+        self.model_analysis_dir_loss = os.path.join(self.model_comparison_dir, 'loss')
+        pathlib.Path(self.model_comparison_dir_roc).mkdir(parents=True, exist_ok=True)
+        pathlib.Path(self.model_comparison_dir_loss).mkdir(parents=True, exist_ok=True)
