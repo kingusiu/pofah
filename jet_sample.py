@@ -1,4 +1,5 @@
 import pandas as pd
+import random
 
 import pofah.util.input_data_reader as idr
 import sarewt.data_reader as dr
@@ -77,6 +78,19 @@ class JetSample():
     
     def describe( self, feature ):
         print('mean = {0:.2f}, min = {1:.2f}, max = {2:.2f}'.format(self.data[feature].mean(),self.data[feature].min(), self.data[feature].max()))
+
+    def equals(self, other, drop_col=None, print_some=False):
+        dat_self = self.data.drop(drop_col, axis=1) if drop_col else self.data
+        dat_other = other.data.drop(drop_col, axis=1) if drop_col else other.data
+
+        if print_rand:
+            idx = random.choices(range(len(self)-1), k=5) # compare 5 entries at random
+            print('this: ' dat_self.iloc[idx].values.flatten())
+            print('other: ' dat_other.iloc[idx].values.flatten())
+            print('all equal: ', (dat_self.iloc[idx].values == other.data.iloc[idx].values).all())
+
+        return dat_self.equals(dat_other)
+
     
     def dump( self, path ):
         dump_data = self.data

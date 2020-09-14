@@ -10,16 +10,15 @@ def filter_arrays_on_value(*arrays, filter_arr, filter_val, comp=operator.gt):
 
 
 def get_mean_and_std(dat):
+	''' compute mean and std-dev of each feature (axis 2) of a datasample [N_examples, K_elements, F_features]
 	'''
-	compute mean and std-dev of each feature (axis 2) of a datasample [N_examples, K_elements, F_features]
-	'''
-	std = np.nanstd(dat,axis=(0,1))
-	mean = np.nanmean(dat,axis=(0,1))
+	std = np.nanstd(dat, axis=(0,1))
+	mean = np.nanmean(dat, axis=(0,1))
 	print('computed mean {} and std-dev {}'.format(mean, std))
 	std[std == 0.0] = 1.0 # handle zeros
 	return mean, std
 
-def multi_replace(repl_dict, text):
+def multi_replace(text, repl_dict):
 	''' replace each key of dict with value of dict in text '''
 	regex = re.compile("(%s)" % "|".join(map(re.escape,repl_dict.keys()))) 
 	return regex.sub(lambda word: repl_dict[word.string[word.start():word.end()]], text)
