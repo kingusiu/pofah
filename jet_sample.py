@@ -1,5 +1,6 @@
 import pandas as pd
 import random
+import numpy as np
 
 import pofah.util.input_data_reader as idr
 import sarewt.data_reader as dr
@@ -83,11 +84,12 @@ class JetSample():
         dat_self = self.data.drop(drop_col, axis=1) if drop_col else self.data
         dat_other = other.data.drop(drop_col, axis=1) if drop_col else other.data
 
-        if print_rand:
-            idx = random.choices(range(len(self)-1), k=5) # compare 5 entries at random
-            print('this: ' dat_self.iloc[idx].values.flatten())
-            print('other: ' dat_other.iloc[idx].values.flatten())
-            print('all equal: ', (dat_self.iloc[idx].values == other.data.iloc[idx].values).all())
+        if print_some:
+            idx = random.choices(range(len(self)-1), k=4) # compare 5 entries at random
+            with np.printoptions(precision=3, suppress=True):
+                print('-- this: ', dat_self.iloc[idx].values)
+                print('-- other: ', dat_other.iloc[idx].values)
+                print('examples all equal: ', (dat_self.iloc[idx].values == dat_other.iloc[idx].values).all())
 
         return dat_self.equals(dat_other)
 
