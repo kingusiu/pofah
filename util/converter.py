@@ -6,19 +6,17 @@ def nan_or_inf_idx(array):
 	idx.extend(np.argwhere(np.isinf(array))[:,0]) # events that have at least one particle with an inf value
 	return np.unique(np.asarray(idx))
 
-def delete_nan_and_inf_events(constituents):
+def delete_nan_and_inf_events(constituents, features):
 	idx = nan_or_inf_idx(constituents)
 	print('[converter.xyze_to_eppt]: {} NaN or inf values found. deleting affected events'.format(len(idx)))
-	return np.delete(constituents,idx,axis=0)
+	return np.delete(constituents, idx, axis=0), np.delete(features, idx, axis=0)
 
 def xyze_to_eppt(constituents):
-	''' converts an array [N x 100, 4] of particles
+	''' converts an array [N x 2 x 100, 4] of particles
 		from px, py, pz, E to eta, phi, pt (mass omitted)
 	'''
 	PX, PY, PZ, E = range(4)
-
-	pt = np.sqrt(np.float_power(constituents[:,:,:,PX], 2) + np.float_power(constituents[:,:,:,PY], 2)) # numpy.float16 dtype -> float power to avoid overflow
-	eta = np.arcsinh(np.divide(constituents[:,:,:,PZ], pt, out=np.zeros_like(pt), where=pt!=0.))
-	phi = np.arctan2(constituents[:,:,:,PY], constituents[:,:,:,PX])
-
-	return delete_nan_and_inf_events(np.stack([eta, phi, pt], axis=3))
+	pt = np.sqrt(np.float_power(constituents[:,:,:,PX], 2) + np.float_power(constituents[:,:,:,PY], 2), dtype='float16') # numpy.float16 dtype -> float power to avoid overflow
+	eta = np.arcsinh(np.divide(constituents[:,:,:,PZ], pt, out=np.zeros_like(pt), where=pt!=0.), dtype='float16')
+	phi = np.arctan2(constituents[:,:,:,PY], constituents[:,:,:,PX], dtype='float16')
+	return np.stack([eta, phi, pt], axis=3)
