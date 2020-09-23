@@ -52,5 +52,5 @@ class CaseEventSample(EventSample):
         constituents, constituents_names, features, features_names, truth_labels = reader.read_events_from_dir()
         samples = []
         for name, label in zip(names, truth_ids):
-            features, = ut.filter_arrays_on_value(constituents, features, filter_arr=truth_labels, filter_val=label, comp=operator.eq)
+            sample_const, sample_feat = ut.filter_arrays_on_value(constituents, features, filter_arr=truth_labels, filter_val=label, comp=operator.eq)
             samples.append(...)
