@@ -1,9 +1,11 @@
 import numpy as np
 import pandas as pd
 import os
+import operator
 import pofah.util.input_data_reader as idr
 import pofah.util.result_writer as rw
 import pofah.path_constants.sample_dict as sd
+import sarewt.data_reader as dare
 
 
 class EventSample():
@@ -42,3 +44,13 @@ class EventSample():
         rw.write_event_sample_to_file(particles, self.event_features.values, self.particle_feature_names, list(self.event_features.columns), path)
 
 
+class CaseEventSample(EventSample):
+
+    @classmethod
+    def from_input_dir(cls, names=['qcdSig', 'GtoZZ25', 'WtoWZ25', 'WkktoWWW25', 'btotW26'], truth_ids=range(4), path):
+        reader = dare.CaseDataReader('.')
+        constituents, constituents_names, features, features_names, truth_labels = reader.read_events_from_dir()
+        samples = []
+        for name, label in zip(names, truth_ids):
+            features, = ut.filter_arrays_on_value(constituents, features, filter_arr=truth_labels, filter_val=label, comp=operator.eq)
+            samples.append(...)
