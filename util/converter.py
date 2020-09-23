@@ -21,9 +21,4 @@ def xyze_to_eppt(constituents):
 	eta = np.arcsinh(np.divide(constituents[:,:,:,PZ], pt, out=np.zeros_like(pt), where=pt!=0.))
 	phi = np.arctan2(constituents[:,:,:,PY], constituents[:,:,:,PX])
 
-	# check for nan values
-	del_idx = nan_or_inf_idx(pt, eta, phi)
-	if del_idx.size > 0:
-		print('[converter.xyze_to_eppt]: {} NaN values found'.format(len(nan_idx)))
-		np.delete(pt, nan_idx, axis=0), np.delete(eta, nan_idx, axis=0), np.delete(phi, nan_idx, axis=0)
 	return delete_nan_and_inf_events(np.stack([eta, phi, pt], axis=3))
