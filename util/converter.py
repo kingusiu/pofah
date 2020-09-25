@@ -19,4 +19,5 @@ def xyze_to_eppt(constituents):
 	pt = np.sqrt(np.float_power(constituents[:,:,:,PX], 2) + np.float_power(constituents[:,:,:,PY], 2), dtype='float16') # numpy.float16 dtype -> float power to avoid overflow
 	eta = np.arcsinh(np.divide(constituents[:,:,:,PZ], pt, out=np.zeros_like(pt), where=pt!=0.), dtype='float16')
 	phi = np.arctan2(constituents[:,:,:,PY], constituents[:,:,:,PX], dtype='float16')
+
 	return np.stack([eta, phi, pt], axis=3)

@@ -54,8 +54,11 @@ class CaseEventSample(EventSample):
         constituents, constituents_names, features, features_names, truth_labels = reader.read_events_from_dir()
         samples = []
         for name, label in zip(names, truth_ids):
+            # get examples for sample with truth label 'label'
             sample_const, sample_feat = utfu.filter_arrays_on_value(constituents, features, filter_arr=truth_labels.squeeze(), filter_val=label, comp=operator.eq)
+            # convert particles from px, py, pz, E to eta, phi, pt (if not converting, drop E column)
             converted_sample_const = conv.xyze_to_eppt(sample_const)
+            # delete nan and inf values produced in conversion
             sample_const, sample_feat = conv.delete_nan_and_inf_events(converted_sample_const, sample_feat)
             samples.append(cls(name, [sample_const[:,0,:,:], sample_const[:,1,:,:]], sample_feat, features_names)) # inverting constituents format from [N x 2 x 100 x 3] to [2 x N x 100 x 3] 
         return samples
