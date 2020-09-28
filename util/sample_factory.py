@@ -3,7 +3,7 @@ from collections import OrderedDict
 import pathlib
 import pofah.path_constants.sample_dict as sd
 import pofah.jet_sample as jesa
-import pofah.event_sample as evsa
+import pofah.util.event_sample as evsa
 import pofah.util.utility_fun as utfu
 
 

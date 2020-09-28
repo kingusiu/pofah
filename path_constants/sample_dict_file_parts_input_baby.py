@@ -5,4 +5,6 @@ path_dict = {
 		'qcdSig': 'qcd_sqrtshatTeV_13TeV_PU40',
                 'GtoWW35na': 'RSGraviton_WW_NARROW_13TeV_PU40_3.5TeV',
 	},
+
+        'file_names' : {},
 }

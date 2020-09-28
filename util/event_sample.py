@@ -20,7 +20,7 @@ class EventSample():
         :param event_features: N x F_n features (pandas dataframe)
         '''
         self.name = name
-        self.particles = np.asarray(particles) # numpy array [ 2 (jets) x N events x 100 particles x 3 features ]
+        self.particles = np.asarray(particles) # numpy array [ N events x 2 (jets) x 100 particles x 3 features ]
         self.particle_feature_names = particle_feature_names
         self.event_features = pd.DataFrame(event_features) # dataframe: names = columns
 
@@ -36,10 +36,11 @@ class EventSample():
         ''' reading data in all files in 'path' to event sample'''
         reader = dare.DataReader(path)
         constituents, constituents_names, features, features_names = reader.read_events_from_dir()
-        return cls(name, np.stack([constituents[:,0,:,:], constituents[:,1,:,:]]), pd.DataFrame(features, columns=features_names), constituents_names)
+        return cls(name, constituents, pd.DataFrame(features, columns=features_names), constituents_names)
 
     def get_particles(self):
-        return [self.particles[0],self.particles[1]]
+        ''' returning particles per jet as [2 x N x 100 x 3] '''
+        return [self.particles[:,0,:,:], self.particles[:,1,:,:]]
 
     def get_event_features(self):
         return self.event_features
@@ -47,9 +48,12 @@ class EventSample():
     def add_event_feature(self, label, value):
         self.event_features[label] = value
 
+    def transform_to_cartesian(self, inplace=True):
+        ''' transform cylindrical (eta, phi, pt) constituents to cartesian (px, py, pz) constituents '''
+        converted_particles = conv.eppt_to_xyz(self.get_particles().transpose())
+
     def dump(self,path):
-        particles = np.stack((self.particles[0],self.particles[1]), axis=1) # particles in input files stored as ( N x 2 jets x 100 particles x 3 features )
-        rw.write_event_sample_to_file(particles, self.event_features.values, self.particle_feature_names, list(self.event_features.columns), path)
+        rw.write_event_sample_to_file(self.particles, self.event_features.values, self.particle_feature_names, list(self.event_features.columns), path)
 
 
 class CaseEventSample(EventSample):
@@ -66,5 +70,5 @@ class CaseEventSample(EventSample):
             converted_sample_const = conv.xyze_to_eppt(sample_const)
             # delete nan and inf values produced in conversion
             sample_const, sample_feat = conv.delete_nan_and_inf_events(converted_sample_const, sample_feat)
-            samples.append(cls(name, [sample_const[:,0,:,:], sample_const[:,1,:,:]], sample_feat, features_names)) # inverting constituents format from [N x 2 x 100 x 3] to [2 x N x 100 x 3] 
+            samples.append(cls(name, sample_const, sample_feat, features_names)) # constituents format [N x 2 x 100 x 3]  
         return samples
