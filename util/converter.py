@@ -21,3 +21,14 @@ def xyze_to_eppt(constituents):
 	phi = np.arctan2(constituents[:,:,:,PY], constituents[:,:,:,PX], dtype='float16')
 
 	return np.stack([eta, phi, pt], axis=3)
+
+def eppt_to_xyz(constituents):
+	''' converts an array [N x 2 x 100, 4] of particles
+		from eta, phi, pt to px, py, pz (energy omitted)
+	'''
+	ETA, PHI, PT = range(3)
+	px = constituents[:,:,:,PT] * np.cos(constituents[:,:,:,PHI])
+	py = constituents[:,:,:,PT] * np.sin(constituents[:,:,:,PHI])
+	pz = constituents[:,:,:,PT] * np.sinh(constituents[:,:,:,ETA])
+
+	return np.stack([px,py,pz], axis=3)
