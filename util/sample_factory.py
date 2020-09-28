@@ -34,16 +34,11 @@ def read_data_to_jet_sample_dict(sample_ids, read_fun):
         data[sample_id] = js.JetSample.from_input_file(sample_id, read_fun(sample_id))
     return data
 
-def read_results_to_jet_sample_dict(sample_ids, experiment, mode='default'):
-    paths = SamplePathFactory(experiment, mode=mode)
-    return read_data_to_jet_sample_dict(sample_ids, paths.result_path)
-
-def read_inputs_to_jet_sample_dict(sample_ids, experiment, mode='default'):
-    paths = SamplePathFactory(experiment, mode=mode)  # 'default' datasample
-    return read_data_to_jet_sample_dict(sample_ids, paths.sample_path)
-
 def read_inputs_to_jet_sample_dict_from_dir(sample_ids, paths):
     data = OrderedDict()
     for sample_id in sample_ids:
         data[sample_id] = js.JetSample.from_input_dir(sample_id, paths.sample_dir_path(sample_id))
     return data
+
+def read_inputs_to_event_sample_dict_from_dir(sample_ids, paths):
+    

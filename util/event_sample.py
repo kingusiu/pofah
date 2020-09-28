@@ -25,11 +25,18 @@ class EventSample():
         self.event_features = pd.DataFrame(event_features) # dataframe: names = columns
 
     @classmethod
-    def from_input_file(cls,name,path):
+    def from_input_file(cls, name, path):
         reader = idr.InputDataReader(path)
         particles, part_feature_names = reader.read_jet_constituents()
         jet_features = reader.read_dijet_features_to_df()
         return cls(name, np.stack(particles), jet_features, part_feature_names)
+
+    @classmethod
+    def from_input_dir(cls, name, path):
+        ''' reading data in all files in 'path' to event sample'''
+        reader = dare.DataReader(path)
+        constituents, constituents_names, features, features_names = reader.read_events_from_dir()
+        return cls(name, np.stack(constituents[:,0,:,:], constituents[:,1,:,:]), pd.DataFrame(features, columns=features_names), constituents_names)
 
     def get_particles(self):
         return [self.particles[0],self.particles[1]]
@@ -46,7 +53,6 @@ class EventSample():
 
 
 class CaseEventSample(EventSample):
-
 
     @classmethod
     def from_input_dir(cls, path, names=['qcdSig', 'GtoZZ25', 'WtoWZ25', 'WkktoWWW25', 'btotW26'], truth_ids=range(4)):
