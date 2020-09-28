@@ -1,9 +1,9 @@
 
 path_dict = {
-	'base_dir' : '/eos/user/k/kiwoznia/data/VAE_data/events',
+	'base_dir' : '/eos/user/k/kiwoznia/data/VAE_data/case_events',
 
 	'sample_dir' : {
-		'qcdSig': 'qcd_sqrtshatTeV_13TeV_PU40_parts',
+		'qcdSig': '/eos/user/k/kiwoznia/data/VAE_data/case_events/train/qcd_sqrtshatTeV_13TeV_PU40_parts',
 		'qcdSigSingle': 'qcd_sqrtshatTeV_13TeV_PU40',
                 'qcdSigBis': 'qcd_sqrtshatTeV_13TeV_PU40_BIS_parts',
                 'qcdSigAll': 'qcd_sqrtshatTeV_13TeV_PU40_ALL_parts',

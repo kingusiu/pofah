@@ -36,7 +36,7 @@ class EventSample():
         ''' reading data in all files in 'path' to event sample'''
         reader = dare.DataReader(path)
         constituents, constituents_names, features, features_names = reader.read_events_from_dir()
-        return cls(name, np.stack(constituents[:,0,:,:], constituents[:,1,:,:]), pd.DataFrame(features, columns=features_names), constituents_names)
+        return cls(name, np.stack([constituents[:,0,:,:], constituents[:,1,:,:]]), pd.DataFrame(features, columns=features_names), constituents_names)
 
     def get_particles(self):
         return [self.particles[0],self.particles[1]]

@@ -2,7 +2,8 @@ import os
 from collections import OrderedDict
 import pathlib
 import pofah.path_constants.sample_dict as sd
-import pofah.jet_sample as js
+import pofah.jet_sample as jesa
+import pofah.event_sample as evsa
 import pofah.util.utility_fun as utfu
 
 
@@ -28,17 +29,22 @@ class SamplePathDirFactory():
 
 ##### utility functions
 
-def read_data_to_jet_sample_dict(sample_ids, read_fun):
+def read_inputs_to_sample_dict_from_file(sample_ids, paths):
     data = OrderedDict()
     for sample_id in sample_ids:
         data[sample_id] = js.JetSample.from_input_file(sample_id, read_fun(sample_id))
     return data
 
-def read_inputs_to_jet_sample_dict_from_dir(sample_ids, paths):
+def read_inputs_to_sample_dict_from_dir(sample_ids, paths, cls):
     data = OrderedDict()
     for sample_id in sample_ids:
-        data[sample_id] = js.JetSample.from_input_dir(sample_id, paths.sample_dir_path(sample_id))
+        data[sample_id] = cls.from_input_dir(sample_id, paths.sample_dir_path(sample_id))
     return data
 
+def read_inputs_to_jet_sample_dict_from_dir(sample_ids, paths):
+    ''' read dictionary of JetSamples '''
+    return read_inputs_to_sample_dict_from_dir(sample_ids, paths, jesa.JetSample)
+
 def read_inputs_to_event_sample_dict_from_dir(sample_ids, paths):
-    
+    ''' read dictionary of EventSamples '''
+    return read_inputs_to_sample_dict_from_dir(sample_ids, paths, evsa.EventSample)
