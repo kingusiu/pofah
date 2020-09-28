@@ -48,9 +48,14 @@ class EventSample():
     def add_event_feature(self, label, value):
         self.event_features[label] = value
 
-    def transform_to_cartesian(self, inplace=True):
+    def convert_to_cartesian(self, inplace=True):
         ''' transform cylindrical (eta, phi, pt) constituents to cartesian (px, py, pz) constituents '''
-        converted_particles = conv.eppt_to_xyz(self.get_particles().transpose())
+        converted_particles = conv.eppt_to_xyz(self.particles)
+        if inplace:
+            self.particles = converted_particles
+            self.particle_feature_names = ['px', 'py', 'pz']
+        else:
+            self.converted_particles = converted_particles
 
     def dump(self,path):
         rw.write_event_sample_to_file(self.particles, self.event_features.values, self.particle_feature_names, list(self.event_features.columns), path)
