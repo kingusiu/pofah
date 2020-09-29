@@ -7,6 +7,7 @@ update_dict = {
 	'base_dir' : '/eos/user/k/kiwoznia/data/VAE_data/events',
 
 	'sample_dir' : {
+                'qcdSideAll': 'qcd_sqrtshatTeV_13TeV_PU40_SIDEBAND_ALL_parts',
 		'qcdSig': 'qcd_sqrtshatTeV_13TeV_PU40_parts',
 		'qcdSigSingle': 'qcd_sqrtshatTeV_13TeV_PU40',
                 'qcdSigBis': 'qcd_sqrtshatTeV_13TeV_PU40_BIS_parts',
