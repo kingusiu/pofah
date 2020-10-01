@@ -29,7 +29,7 @@ class Experiment():
             pathlib.Path(self.tensorboard_dir).mkdir(parents=True, exist_ok=True)
 
         if model_dir:
-            self.model_dir = utfu.multi_replace(text=path_dict['model_dir'], repl_dict=repl_dict)
+            self.model_dir = utfu.multi_replace(text=self.path_dict['model_dir'], repl_dict=self.param_dict)
             pathlib.Path(self.model_dir).mkdir(parents=True, exist_ok=True)
 
         if analysis_dir: # discriminator analysis
