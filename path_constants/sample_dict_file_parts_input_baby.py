@@ -1,4 +1,10 @@
-path_dict = {
+import copy
+import pofah.path_constants.sample_dict as sd
+
+path_dict = copy.deepcopy(sd.path_dict)
+
+update_dict = {
+
 	'base_dir' : '/eos/user/k/kiwoznia/data/VAE_data/baby_events',
 
 	'sample_dir' : {
@@ -9,3 +15,5 @@ path_dict = {
 
         'file_names' : {},
 }
+
+path_dict.update(update_dict)

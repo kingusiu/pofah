@@ -20,7 +20,7 @@ class SamplePathDirFactory():
 
     def sample_dir_path(self, id):
         s_path = os.path.join(self.base_dir, self.sample_dir[id])
-        pathlib.Path(s_path).mkdir(parents=True, exist_ok=True) # have to create result directory for each sample here, not optimal, TODO: fix
+        pathlib.Path(s_path).mkdir(parents=True, exist_ok=True) # have to create directory for each sample here when writing results, not optimal, TODO: fix
         return s_path
 
     def sample_file_path(self, id):

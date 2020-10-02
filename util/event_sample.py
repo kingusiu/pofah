@@ -2,7 +2,6 @@ import numpy as np
 import pandas as pd
 import os
 import operator
-import pofah.util.input_data_reader as idr
 import pofah.util.result_writer as rw
 import pofah.path_constants.sample_dict as sd
 import pofah.util.converter as conv
@@ -26,7 +25,7 @@ class EventSample():
 
     @classmethod
     def from_input_file(cls, name, path):
-        reader = idr.InputDataReader(path)
+        reader = dare.DataReader(path)
         particles, part_feature_names = reader.read_jet_constituents()
         jet_features = reader.read_dijet_features_to_df()
         return cls(name, np.stack(particles), jet_features, part_feature_names)
@@ -37,6 +36,9 @@ class EventSample():
         reader = dare.DataReader(path)
         constituents, constituents_names, features, features_names = reader.read_events_from_dir()
         return cls(name, constituents, pd.DataFrame(features, columns=features_names), constituents_names)
+
+    def __len__(self):
+        return len(self.event_features)
 
     def get_particles(self):
         ''' returning particles per jet as [2 x N x 100 x 3] '''
@@ -56,6 +58,7 @@ class EventSample():
             self.particle_feature_names = ['px', 'py', 'pz']
         else:
             self.converted_particles = converted_particles
+        return self
 
     def dump(self,path):
         rw.write_event_sample_to_file(self.particles, self.event_features.values, self.particle_feature_names, list(self.event_features.columns), path)
