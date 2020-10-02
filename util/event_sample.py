@@ -11,44 +11,46 @@ import sarewt.data_reader as dare
 
 class EventSample():
 
-    def __init__(self, name, particles=None, event_features=None, particle_feature_names=None):
+    def __init__(self, name, particles=None, jet_features=None, particle_feature_names=None, jet_feature_names=None):
         '''
         datastructure that holds set of N events with each having two components: data of particles and data of jet features
         :param name: name of the sample
         :param particles: particle features like eta, phi, pt (numpy array) (todo: extend to preprocessed form like images (implement subclass?))
-        :param event_features: N x F_n features (pandas dataframe)
+        :param jet_features: N x F_n features (pandas dataframe)
         '''
         self.name = name
         self.particles = np.asarray(particles) # numpy array [ N events x 2 (jets) x 100 particles x 3 features ]
         self.particle_feature_names = particle_feature_names
-        self.event_features = pd.DataFrame(event_features) # dataframe: names = columns
+        # transform jet features to dataframe if passed as numpy array
+        if not isinstance(jet_features, pd.DataFrame):
+            jet_features = pd.DataFrame(jet_features, columns=jet_feature_names)
+        self.jet_features =  jet_features
 
     @classmethod
     def from_input_file(cls, name, path):
         reader = dare.DataReader(path)
-        particles, part_feature_names = reader.read_jet_constituents()
-        jet_features = reader.read_dijet_features_to_df()
-        return cls(name, np.stack(particles), jet_features, part_feature_names)
+        constituents, constituents_feature_names, jet_features, jet_feature_names = reader.read_events_from_file()
+        return cls(name, constituents, jet_features, constituents_feature_names, jet_feature_names)
 
     @classmethod
     def from_input_dir(cls, name, path):
         ''' reading data in all files in 'path' to event sample'''
         reader = dare.DataReader(path)
-        constituents, constituents_names, features, features_names = reader.read_events_from_dir()
-        return cls(name, constituents, pd.DataFrame(features, columns=features_names), constituents_names)
+        constituents, constituents_feature_names, jet_features, jet_feature_names = reader.read_events_from_dir()
+        return cls(name, constituents, jet_features, constituents_feature_names, jet_feature_names)
 
     def __len__(self):
-        return len(self.event_features)
+        return len(self.jet_features)
 
     def get_particles(self):
         ''' returning particles per jet as [2 x N x 100 x 3] '''
         return [self.particles[:,0,:,:], self.particles[:,1,:,:]]
 
     def get_event_features(self):
-        return self.event_features
+        return self.jet_features
 
     def add_event_feature(self, label, value):
-        self.event_features[label] = value
+        self.jet_features[label] = value
 
     def convert_to_cartesian(self, inplace=True):
         ''' transform cylindrical (eta, phi, pt) constituents to cartesian (px, py, pz) constituents '''
@@ -61,7 +63,7 @@ class EventSample():
         return self
 
     def dump(self,path):
-        rw.write_event_sample_to_file(self.particles, self.event_features.values, self.particle_feature_names, list(self.event_features.columns), path)
+        rw.write_event_sample_to_file(self.particles, self.jet_features.values, self.particle_feature_names, list(self.jet_features.columns), path)
 
 
 class CaseEventSample(EventSample):
