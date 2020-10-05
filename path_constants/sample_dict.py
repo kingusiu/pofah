@@ -43,7 +43,8 @@ path_dict = {
         },
 
         'sample_name' : {
-                'qcdSide': 'QCD side',
+                'qcdSide': 'QCD sideband',
+                'qcdSideAll' : 'QCD sideband all',
                 'qcdSig': 'QCD signalregion',
                 'qcdSigBis': 'QCD signalregion bis',
                 'qcdSigAll': 'QCD signalregion all samples',
@@ -58,6 +59,7 @@ path_dict = {
                 'GtoWW45na': r'$G(4.5 TeV)\to WW$ narrow',
                 'GtoWW45br': r'$G(4.5 TeV)\to WW$ broad',
                 'qcdSideReco': 'QCD side reco',
+                'qcdSideAllReco': 'QCD side all reco',
                 'qcdSigReco': 'QCD signalregion reco',
                 'qcdSigBisReco': 'QCD signalregion bis reco',
                 'qcdSigAllReco': 'QCD signalregion all samples reco',
