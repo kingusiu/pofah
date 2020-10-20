@@ -38,6 +38,7 @@ def read_inputs_to_sample_dict_from_file(sample_ids, paths):
 def read_inputs_to_sample_dict_from_dir(sample_ids, paths, cls):
     data = OrderedDict()
     for sample_id in sample_ids:
+        print('reading ', paths.sample_dir_path(sample_id))
         data[sample_id] = cls.from_input_dir(sample_id, paths.sample_dir_path(sample_id))
     return data
 
