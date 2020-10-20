@@ -47,7 +47,8 @@ class JetSample():
         return cls(event_sample.name, jet_features)
         
     def __getitem__(self, key):
-        ''' return numpy array of values if single key is passed, else whole dataframe subslice with column names if list of strings is passed: 
+        ''' slice by column
+            return numpy array of values if single key is passed, else whole dataframe subslice with column names if list of strings is passed: 
             sample['key'] returns numpy array holding values(!) of column 'key'
             sample[['key']] returns dataframe with single column 'key'
         '''
@@ -59,25 +60,33 @@ class JetSample():
     def __len__( self ):
         return len(self.data)
     
+
+    def cut(self, idx):
+        ''' slice by row
+            return filtered jet sample with events of index idx
+            idx ... numpy array or pandas series of booleans
+        '''
+        return JetSample(name=self.name, data=self.data[idx], title=' '.join(self.title,'filtered'))
+
     def features( self ):
-        return list( self.data.columns )
+        return list(self.data.columns)
         
-    def add_feature( self, label, value ):
+    def add_feature(self, label, value):
         self.data[ label ] = value
         
-    def accepted( self, feature=None ):
+    def accepted(self, feature=None):
         if 'sel' not in self.data:
             print('selection not available for this data sample')
             return
         return self.data[self.data['sel']][feature].values if feature else self.data[self.data['sel']]
         
-    def rejected( self, feature=None ):
+    def rejected(self, feature=None):
         if 'sel' not in self.data:
             print('selection not performed for this data sample')
             return
         return self.data[~self.data['sel']][feature].values if feature else self.data[~self.data['sel']]
     
-    def describe( self, feature ):
+    def describe(self, feature):
         print('mean = {0:.2f}, min = {1:.2f}, max = {2:.2f}'.format(self.data[feature].mean(),self.data[feature].min(), self.data[feature].max()))
 
     def equals(self, other, drop_col=None, print_some=False):
