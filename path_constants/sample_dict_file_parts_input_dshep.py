@@ -8,7 +8,7 @@ update_dict = {
 
 	'sample_dir' : {
                 'qcdSide': 'qcd_sqrtshatTeV_13TeV_PU40_SIDEBAND',
-                'qcdSideBis' : 'qcd_sqrtshatTeV_13TeV_PU40_SIDEBAND_BIS',
+                'qcdSideBis' : 'qcd_sqrtshatTeV_13TeV_PU40_BIS_SIDEBAND',
 		'qcdSig': 'qcd_sqrtshatTeV_13TeV_PU40',
                 'qcdSigBis': 'qcd_sqrtshatTeV_13TeV_PU40_BIS',
                 'GtoWW15na': 'RSGraviton_WW_NARROW_13TeV_PU40_1.5TeV',

@@ -66,7 +66,7 @@ class JetSample():
             return filtered jet sample with events of index idx
             idx ... numpy array or pandas series of booleans
         '''
-        return JetSample(name=self.name, data=self.data[idx], title=' '.join(self.title,'filtered'))
+        return JetSample(name=self.name, data=self.data[idx], title=' '.join([self.title,'filtered']))
 
     def features( self ):
         return list(self.data.columns)
