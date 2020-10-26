@@ -33,7 +33,7 @@ class EventSample():
         return cls(name, constituents, jet_features, constituents_feature_names, jet_feature_names)
 
     @classmethod
-    def from_input_dir(cls, name, path):
+    def from_input_dir(cls, name, path, apply_mjj_cut=True):
         ''' reading data in all files in 'path' to event sample'''
         reader = dare.DataReader(path)
         constituents, constituents_feature_names, jet_features, jet_feature_names = reader.read_events_from_dir()
