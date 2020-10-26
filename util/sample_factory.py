@@ -46,6 +46,6 @@ def read_inputs_to_jet_sample_dict_from_dir(sample_ids, paths, apply_mjj_cut=Tru
     ''' read dictionary of JetSamples '''
     return read_inputs_to_sample_dict_from_dir(sample_ids, paths, jesa.JetSample, apply_mjj_cut)
 
-def read_inputs_to_event_sample_dict_from_dir(sample_ids, paths):
+def read_inputs_to_event_sample_dict_from_dir(sample_ids, paths, apply_mjj_cut=True):
     ''' read dictionary of EventSamples '''
-    return read_inputs_to_sample_dict_from_dir(sample_ids, paths, evsa.EventSample)
+    return read_inputs_to_sample_dict_from_dir(sample_ids, paths, evsa.EventSample, apply_mjj_cut)
