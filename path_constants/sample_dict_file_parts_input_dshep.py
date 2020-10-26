@@ -11,6 +11,7 @@ update_dict = {
                 'qcdSideBis' : 'qcd_sqrtshatTeV_13TeV_PU40_BIS_SIDEBAND',
 		'qcdSig': 'qcd_sqrtshatTeV_13TeV_PU40',
                 'qcdSigBis': 'qcd_sqrtshatTeV_13TeV_PU40_BIS',
+                'qcdNew': 'qcd_sqrtshatTeV_13TeV_PU40_NEW',
                 'GtoWW15na': 'RSGraviton_WW_NARROW_13TeV_PU40_1.5TeV',
                 'GtoWW15br': 'RSGraviton_WW_BROAD_13TeV_PU40_1.5TeV',
                 'GtoWW25na': 'RSGraviton_WW_NARROW_13TeV_PU40_2.5TeV',
