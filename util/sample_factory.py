@@ -35,17 +35,17 @@ def read_inputs_to_sample_dict_from_file(sample_ids, paths):
         data[sample_id] = js.JetSample.from_input_file(sample_id, read_fun(sample_id))
     return data
 
-def read_inputs_to_sample_dict_from_dir(sample_ids, paths, cls, apply_mjj_cut=True):
+def read_inputs_to_sample_dict_from_dir(sample_ids, paths, cls, read_n=None, apply_mjj_cut=True):
     data = OrderedDict()
     for sample_id in sample_ids:
         print('reading ', paths.sample_dir_path(sample_id))
-        data[sample_id] = cls.from_input_dir(sample_id, paths.sample_dir_path(sample_id), apply_mjj_cut)
+        data[sample_id] = cls.from_input_dir(sample_id, paths.sample_dir_path(sample_id), read_n=read_n, apply_mjj_cut=apply_mjj_cut)
     return data
 
 def read_inputs_to_jet_sample_dict_from_dir(sample_ids, paths, apply_mjj_cut=True):
     ''' read dictionary of JetSamples '''
     return read_inputs_to_sample_dict_from_dir(sample_ids, paths, jesa.JetSample, apply_mjj_cut)
 
-def read_inputs_to_event_sample_dict_from_dir(sample_ids, paths, apply_mjj_cut=True):
+def read_inputs_to_event_sample_dict_from_dir(sample_ids, paths, read_n=None, apply_mjj_cut=True):
     ''' read dictionary of EventSamples '''
-    return read_inputs_to_sample_dict_from_dir(sample_ids, paths, evsa.EventSample, apply_mjj_cut)
+    return read_inputs_to_sample_dict_from_dir(sample_ids, paths, evsa.EventSample, read_n=read_n, apply_mjj_cut=apply_mjj_cut)

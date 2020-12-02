@@ -35,8 +35,8 @@ class JetSample():
         return cls(name, df)
 
     @classmethod
-    def from_input_dir(cls, name, path, apply_mjj_cut=True):
-        df = dr.DataReader(path).read_jet_features_from_dir_to_df(apply_mjj_cut)
+    def from_input_dir(cls, name, path, read_n=None, apply_mjj_cut=True):
+        df = dr.DataReader(path).read_jet_features_from_dir_to_df(read_n=read_n, apply_mjj_cut=apply_mjj_cut)
         if 'sel' in df:  # convert selection column to bool
             df['sel'] = df['sel'].astype(bool)
         return cls(name, df)
@@ -68,7 +68,7 @@ class JetSample():
         '''
         return JetSample(name=self.name, data=self.data[idx], title=' '.join([self.title,'filtered']))
 
-    def features( self ):
+    def features(self):
         return list(self.data.columns)
         
     def add_feature(self, label, value):
@@ -103,7 +103,7 @@ class JetSample():
         return dat_self.equals(dat_other)
 
     
-    def dump( self, path ):
+    def dump(self, path):
         dump_data = self.data
         if 'sel' in self.data: # convert selection column to int for writing
             dump_data = self.data.copy()
@@ -111,11 +111,11 @@ class JetSample():
         rw.write_jet_sample_to_file( dump_data.values, list(dump_data.columns), path )
         print('written data sample to {}'.format(path))
         
-    def __repr__( self ):
+    def __repr__(self):
         return self.name
     
-    def plot_name( self ):
-        return self.name.replace(' ','_')
+    def plot_name(self):
+        return self.name.replace(' ', '_')
         
 
 def split_jet_sample_train_test(jet_sample, frac):

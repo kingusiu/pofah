@@ -33,17 +33,20 @@ class EventSample():
         return cls(name, constituents, jet_features, constituents_feature_names, jet_feature_names)
 
     @classmethod
-    def from_input_dir(cls, name, path, apply_mjj_cut=True):
+    def from_input_dir(cls, name, path, read_n=None, apply_mjj_cut=True):
         ''' reading data in all files in 'path' to event sample'''
         reader = dare.DataReader(path)
-        constituents, constituents_feature_names, jet_features, jet_feature_names = reader.read_events_from_dir()
+        constituents, constituents_feature_names, jet_features, jet_feature_names = reader.read_events_from_dir(read_n=Noned_n, NoneJ=1100)
         return cls(name, constituents, jet_features, constituents_feature_names, jet_feature_names)
 
     def __len__(self):
         return len(self.jet_features)
 
-    def __getitem__(self,idx):
-        ''' create sliced copy of sample '''
+    def __getitem__(self, idx):
+        # if idx is a string, return jet feature
+        if isinstance(idx, str):
+            return self.jet_features[idx]
+        # else return sliced event sample
         return EventSample(name=self.name+'Sliced',particles=self.particles[idx], jet_features=self.jet_features[idx], particle_feature_names=self.particle_feature_names)
 
     def get_particles(self):
