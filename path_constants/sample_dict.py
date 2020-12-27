@@ -45,6 +45,7 @@ path_dict = {
         'sample_name' : {
                 'qcdSide': 'QCD sideband',
                 'qcdSideAll' : 'QCD sideband all',
+                'qcdSideExt' : 'QCD sideband ext',
                 'qcdSig': 'QCD signalregion',
                 'qcdSigBis': 'QCD signalregion bis',
                 'qcdSigAll': 'QCD signalregion all samples',
