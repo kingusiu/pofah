@@ -8,7 +8,7 @@ def filter_arrays_on_value(*arrays, filter_arr, filter_val, comp=operator.gt):
     return [a[idx_after_cut] for a in arrays]
 
 
-def get_mean_and_stdev(dat):
+def get_mean_and_stdev(dat): # -> nd.array [num-features], nd.array [num-features]
 	''' compute mean and std-dev of each feature (axis 2) of a datasample [N_examples, K_elements, F_features]
 	'''
 	std = np.nanstd(dat, axis=(0,1))

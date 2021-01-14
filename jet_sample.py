@@ -20,7 +20,7 @@ class JetSample():
         '''
         self.name = name
         self.data = data # assuming data passed as dataframe
-        self.title = name if title is None else title
+        self.title = title or name
 
     @classmethod
     def from_feature_array(cls, name, features, feature_names):

@@ -42,9 +42,9 @@ def read_inputs_to_sample_dict_from_dir(sample_ids, paths, cls, read_n=None, app
         data[sample_id] = cls.from_input_dir(sample_id, paths.sample_dir_path(sample_id), read_n=read_n, apply_mjj_cut=apply_mjj_cut)
     return data
 
-def read_inputs_to_jet_sample_dict_from_dir(sample_ids, paths, apply_mjj_cut=True):
+def read_inputs_to_jet_sample_dict_from_dir(sample_ids, paths, read_n=None, apply_mjj_cut=True):
     ''' read dictionary of JetSamples '''
-    return read_inputs_to_sample_dict_from_dir(sample_ids, paths, jesa.JetSample, apply_mjj_cut)
+    return read_inputs_to_sample_dict_from_dir(sample_ids, paths, jesa.JetSample, read_n=read_n, apply_mjj_cut=apply_mjj_cut)
 
 def read_inputs_to_event_sample_dict_from_dir(sample_ids, paths, read_n=None, apply_mjj_cut=True):
     ''' read dictionary of EventSamples '''
