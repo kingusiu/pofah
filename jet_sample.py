@@ -66,7 +66,11 @@ class JetSample():
             return filtered jet sample with events of index idx
             idx ... numpy array or pandas series of booleans
         '''
-        return JetSample(name=self.name, data=self.data[idx], title=' '.join([self.title,'filtered']))
+        if type(idx) is np.ndarray:
+            new_dat = self.data.iloc[idx]
+        else:
+            new_dat = self.data[idx]
+        return JetSample(name=self.name, data=new_dat, title=' '.join([self.title,'filtered']))
 
     def merge(self, other, shuffle=True):
         ''' merge this and other jet sample and return new union JetSample object '''
