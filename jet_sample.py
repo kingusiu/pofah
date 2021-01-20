@@ -72,6 +72,11 @@ class JetSample():
             new_dat = self.data[idx]
         return JetSample(name=self.name, data=new_dat, title=' '.join([self.title,'filtered']))
 
+    def sample(self, num):
+        ''' sample num events from sample at random '''
+        new_dat = self.data.sample(n=num)
+        return JetSample(name=self.name+'_sampled'+, data=new_dat, title=' '.join([self.title,'sampled']) )
+
     def merge(self, other, shuffle=True):
         ''' merge this and other jet sample and return new union JetSample object '''
         features_merged = pd.concat([self.data, other.data], ignore_index=True)
