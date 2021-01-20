@@ -68,6 +68,14 @@ class JetSample():
         '''
         return JetSample(name=self.name, data=self.data[idx], title=' '.join([self.title,'filtered']))
 
+    def merge(self, other, shuffle=True):
+        ''' merge this and other jet sample and return new union JetSample object '''
+        features_merged = pd.concat([self.data, other.data], ignore_index=True)
+        if shuffle:
+            features_merged = features_merged.sample(frac=1.).reset_index(drop=True)
+        names_merged = self.name + '_and_' + other.name
+        return JetSample(name=names_merged, data=features_merged)
+
     def features(self):
         return list(self.data.columns)
         
