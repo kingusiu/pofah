@@ -71,7 +71,7 @@ class InputDataReader():
 
     def read_dijet_features_to_df(self):
         features, names = self.read_dijet_features()
-        return pd.DataFrame(features,columns=names)
+        return pd.DataFrame(features, columns=names)
 
 
     def read_events_convert_to_images(self, image_size=32, mass_cut=1100.0):

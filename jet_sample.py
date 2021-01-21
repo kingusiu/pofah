@@ -11,6 +11,9 @@ import pofah.util.result_writer as rw
 """
 
 class JetSample():
+
+    FEAT_NAMES = ['mJJ', 'j1Pt', 'j1Eta', 'j1Phi', 'j1M', 'j1E', 'j2Pt', 'j2M', 'j2E', 'DeltaEtaJJ', 'DeltaPhiJJ']
+    FEAT_IDX = dict(zip(feature_names, range(len(feature_names))))
     
     def __init__(self, name, data, title=None):
         '''
@@ -72,10 +75,10 @@ class JetSample():
             new_dat = self.data[idx]
         return JetSample(name=self.name, data=new_dat, title=' '.join([self.title,'filtered']))
 
-    def sample(self, num):
-        ''' sample num events from sample at random '''
-        new_dat = self.data.sample(n=num)
-        return JetSample(name=self.name+'_sampled'+, data=new_dat, title=' '.join([self.title,'sampled']) )
+    def sample(self, n):
+        ''' sample n events from sample at random '''
+        new_dat = self.data.sample(n=n)
+        return JetSample(name=self.name+'_sampled', data=new_dat, title=' '.join([self.title,'sampled']) )
 
     def merge(self, other, shuffle=True):
         ''' merge this and other jet sample and return new union JetSample object '''
