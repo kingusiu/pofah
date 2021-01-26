@@ -13,7 +13,7 @@ import pofah.util.result_writer as rw
 class JetSample():
 
     FEAT_NAMES = ['mJJ', 'j1Pt', 'j1Eta', 'j1Phi', 'j1M', 'j1E', 'j2Pt', 'j2M', 'j2E', 'DeltaEtaJJ', 'DeltaPhiJJ']
-    FEAT_IDX = dict(zip(feature_names, range(len(feature_names))))
+    FEAT_IDX = dict(zip(FEAT_NAMES, range(len(FEAT_NAMES))))
     
     def __init__(self, name, data, title=None):
         '''
@@ -33,15 +33,19 @@ class JetSample():
     @classmethod
     def from_input_file(cls, name, path):
         df = idr.InputDataReader(path).read_dijet_features_to_df()
-        if 'sel' in df:  # convert selection column to bool
-            df['sel'] = df['sel'].astype(bool)
+        # convert any QR-selection colums from 0/1 to bool
+        sel_cols = [c for c in df if c.startswith('sel')]
+        for sel in sel_cols:  # convert selection column to bool
+            df[sel] = df[sel].astype(bool)
         return cls(name, df)
 
     @classmethod
-    def from_input_dir(cls, name, path, read_n=None, apply_mjj_cut=True):
-        df = dr.DataReader(path).read_jet_features_from_dir_to_df(read_n=read_n, apply_mjj_cut=apply_mjj_cut)
-        if 'sel' in df:  # convert selection column to bool
-            df['sel'] = df['sel'].astype(bool)
+    def from_input_dir(cls, name, path, read_n=None, **cuts):
+        df = dr.DataReader(path).read_jet_features_from_dir_to_df(read_n=read_n, **cuts)
+        # convert any QR-selection colums from 0/1 to bool
+        sel_cols = [c for c in df if c.startswith('sel')]
+        for sel in sel_cols:  # convert selection column to bool
+            df[sel] = df[sel].astype(bool)
         return cls(name, df)
 
     @classmethod
@@ -94,17 +98,19 @@ class JetSample():
     def add_feature(self, label, value):
         self.data[ label ] = value
         
-    def accepted(self, feature=None):
-        if 'sel' not in self.data:
-            print('selection not available for this data sample')
+    def accepted(self, quantile, feature=None):
+        q_key = 'sel_q{:02}'.format(int(quantile*100)) 
+        if q_key not in self.data:
+            print('selection for quantile {} not available for this data sample'.format(quantile))
             return
-        return self.data[self.data['sel']][feature].values if feature else self.data[self.data['sel']]
+        return self.data[self.data[q_key]][feature].values if feature else self.data[self.data[q_key]]
         
-    def rejected(self, feature=None):
-        if 'sel' not in self.data:
-            print('selection not performed for this data sample')
+    def rejected(self, quantile, feature=None):
+        q_key = 'sel_q{:02}'.format(int(quantile*100)) 
+        if q_key not in self.data:
+            print('selection for quantile {} not available for this data sample'.format(quantile))
             return
-        return self.data[~self.data['sel']][feature].values if feature else self.data[~self.data['sel']]
+        return self.data[~self.data[q_key]][feature].values if feature else self.data[~self.data[q_key]]
     
     def describe(self, feature):
         print('mean = {0:.2f}, min = {1:.2f}, max = {2:.2f}'.format(self.data[feature].mean(),self.data[feature].min(), self.data[feature].max()))
@@ -125,10 +131,12 @@ class JetSample():
     
     def dump(self, path):
         dump_data = self.data
-        if 'sel' in self.data: # convert selection column to int for writing
+        sel_cols = [c for c in self.data if c.startswith('sel')]
+        if sel_cols: # convert selection column to int for writing
             dump_data = self.data.copy()
-            dump_data['sel'] = dump_data['sel'].astype(int)
-        rw.write_jet_sample_to_file( dump_data.values, list(dump_data.columns), path )
+            for sel in sel_cols:
+                dump_data[sel] = dump_data[sel].astype(int)
+        rw.write_jet_sample_to_file(dump_data.values, list(dump_data.columns), path)
         print('written data sample to {}'.format(path))
         
     def __repr__(self):
