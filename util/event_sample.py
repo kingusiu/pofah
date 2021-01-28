@@ -27,9 +27,9 @@ class EventSample():
         self.jet_features =  jet_features
 
     @classmethod
-    def from_input_file(cls, name, path):
+    def from_input_file(cls, name, path, **cuts):
         reader = dare.DataReader(path)
-        constituents, jet_features = reader.read_events_from_file()
+        constituents, jet_features = reader.read_events_from_file(**cuts)
         constituents_feature_names, jet_feature_names = reader.read_labels_from_file()
         return cls(name, constituents, jet_features, constituents_feature_names, jet_feature_names)
 
