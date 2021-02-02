@@ -18,13 +18,15 @@ class SamplePathDirFactory():
         self.base_dir = utfu.multi_replace(self.base_dir, repl_dict)
         return self
 
-    def sample_dir_path(self, id):
+    def sample_dir_path(self, id, mkdir=False):
         s_path = os.path.join(self.base_dir, self.sample_dir[id])
-        pathlib.Path(s_path).mkdir(parents=True, exist_ok=True) # have to create directory for each sample here when writing results, not optimal, TODO: fix
+        if mkdir:
+            pathlib.Path(s_path).mkdir(parents=True, exist_ok=True) # have to create directory for each sample here when writing results, not optimal, TODO: fix
         return s_path
 
-    def sample_file_path(self, id):
-        return os.path.join(self.base_dir, self.sample_dir[id], self.sample_file[id]+'.h5')
+    def sample_file_path(self, id, mkdir=False):
+        s_path = self.sample_dir_path(id, mkdir)
+        return os.path.join(s_path, self.sample_file[id]+'.h5')
 
 
 ##### utility functions
