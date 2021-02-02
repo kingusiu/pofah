@@ -5,7 +5,7 @@ path_dict = copy.deepcopy(sd_reco.path_dict)
 
 update_dict = {
 	
-        'base_dir' : '/eos/home-k/kiwoznia/data/VAE_results/bump_hunt_results/$run$/selections/$strategy$/$quantile$',
+        'base_dir' : '/eos/user/k/kiwoznia/data/QR_results/run_$run$/sig_$sig_name$/xsec_$sig_xsec$',
 
 }
 
