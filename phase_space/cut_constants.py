@@ -18,7 +18,7 @@ sideband_cuts.update(**global_cuts)
 
 signalregion_cuts = {
     
-    #'signalregion': 1.4,
+    'signalregion': 1.4,
     'j1Pt': 200,
     'j2Pt': 200,
 }

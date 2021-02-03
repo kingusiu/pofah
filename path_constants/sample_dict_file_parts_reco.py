@@ -22,8 +22,8 @@ update_dict = {
                 'GtoWW45naReco': 'RSGraviton_WW_NARROW_13TeV_PU40_4.5TeV_NEW_parts',
                 'GtoWW45brReco': 'RSGraviton_WW_BROAD_13TeV_PU40_4.5TeV_NEW_parts',
                 # prepared train and test split data for QR training
-                'qcdSigRecoAllTrain': 'qcd_sqrtshatTeV_13TeV_PU40_NEW_ALL_Train_signalregion_parts',
-                'qcdSigRecoAllTest': 'qcd_sqrtshatTeV_13TeV_PU40_NEW_ALL_Test_signalregion_parts',
+                'qcdSigAllTrainReco': 'qcd_sqrtshatTeV_13TeV_PU40_NEW_ALL_Train_signalregion_parts',
+                'qcdSigAllTestReco': 'qcd_sqrtshatTeV_13TeV_PU40_NEW_ALL_Test_signalregion_parts',
 	},
 }
 
