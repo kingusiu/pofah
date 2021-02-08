@@ -2,7 +2,6 @@ import pandas as pd
 import random
 import numpy as np
 
-import pofah.util.input_data_reader as idr
 import sarewt.data_reader as dr
 import pofah.util.result_writer as rw
 
@@ -27,12 +26,12 @@ class JetSample():
 
     @classmethod
     def from_feature_array(cls, name, features, feature_names):
-        df = pd.DataFrame(features,columns=feature_names)
+        df = pd.DataFrame(features, columns=feature_names)
         return cls(name, df)
 
     @classmethod
-    def from_input_file(cls, name, path):
-        df = idr.InputDataReader(path).read_dijet_features_to_df()
+    def from_input_file(cls, name, path, **cuts):
+        df = dr.DataReader(path).read_jet_features_from_file(features_to_df=True, **cuts)
         # convert any QR-selection colums from 0/1 to bool
         sel_cols = [c for c in df if c.startswith('sel')]
         for sel in sel_cols:  # convert selection column to bool

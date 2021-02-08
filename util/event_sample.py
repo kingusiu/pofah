@@ -48,7 +48,7 @@ class EventSample():
         if isinstance(idx, str):
             return self.jet_features[idx]
         # else return sliced event sample
-        return EventSample(name=self.name+'Sliced',particles=self.particles[idx], jet_features=self.jet_features[idx], particle_feature_names=self.particle_feature_names)
+        return EventSample(name=self.name+'Sliced', particles=self.particles[idx], jet_features=self.jet_features[idx], particle_feature_names=self.particle_feature_names)
 
     def get_particles(self):
         ''' returning particles per jet as [2 x N x 100 x 3] '''
