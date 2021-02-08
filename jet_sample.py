@@ -145,10 +145,10 @@ class JetSample():
         return self.name.replace(' ', '_')
         
 
-def split_jet_sample_train_test(jet_sample, frac):
+def split_jet_sample_train_test(jet_sample, frac, new_names=None):
     
     """ shuffles and splits dataset into training-set and testing-set accorinding to fraction frac """
-    
+    new_names = new_names or (jet_sample.name+'Train', jet_sample.name+'Test')
     df_copy = jet_sample.data.copy()
 
     N = df_copy.shape[0]
@@ -156,4 +156,4 @@ def split_jet_sample_train_test(jet_sample, frac):
     first = shuffled[:int(N*frac)].reset_index(drop=True)
     second = shuffled[int(N*frac):].reset_index(drop=True)
     
-    return [JetSample(jet_sample.name+'Train', first), JetSample(jet_sample.name+'Test', second)]
+    return [JetSample(new_names[0], first), JetSample(new_names[1], second)]
