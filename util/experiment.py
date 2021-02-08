@@ -16,7 +16,7 @@ class Experiment():
         self.model_analysis_dir = os.path.join(co.config['model_analysis_base_dir'], self.run_dir)
 
 
-    def setup(self, fig_dir=False, result_dir=False, tensorboard_dir=False, model_dir=False, analysis_dir=False, model_analysis_dir=False, model_comparison_dir=False):
+    def setup(self, fig_dir=False, result_dir=False, tensorboard_dir=False, model_dir=False, model_dir_qr=False, analysis_dir=False, model_analysis_dir=False, model_comparison_dir=False):
 
         if fig_dir:
             pathlib.Path(self.fig_dir).mkdir(parents=True, exist_ok=True)
@@ -28,9 +28,15 @@ class Experiment():
             self.tensorboard_dir = os.path.join(co.config['tensorboard_dir'], self.run_dir)
             pathlib.Path(self.tensorboard_dir).mkdir(parents=True, exist_ok=True)
 
+        # model paths VAE
         if model_dir:
             self.model_dir = utfu.multi_replace(text=self.path_dict['model_dir'], repl_dict=self.param_dict)
             pathlib.Path(self.model_dir).mkdir(parents=True, exist_ok=True)
+
+        # model paths QR
+        if model_dir_qr:
+            self.model_dir_qr = utfu.multi_replace(text=self.path_dict['model_dir_qr'], repl_dict=self.param_dict)
+            pathlib.Path(self.model_dir_qr).mkdir(parents=True, exist_ok=True)            
 
         if analysis_dir: # discriminator analysis
             self.analysis_dir_fig = utfu.multi_replace(text=self.path_dict['analysis_base_dir_fig'], repl_dict=self.param_dict)
