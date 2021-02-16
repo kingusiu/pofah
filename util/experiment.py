@@ -16,7 +16,7 @@ class Experiment():
         self.model_analysis_dir = os.path.join(co.config['model_analysis_base_dir'], self.run_dir)
 
 
-    def setup(self, fig_dir=False, result_dir=False, tensorboard_dir=False, model_dir=False, model_dir_qr=False, analysis_dir=False, model_analysis_dir=False, model_comparison_dir=False):
+    def setup(self, fig_dir=False, result_dir=False, tensorboard_dir=False, model_dir=False, model_dir_qr=False, analysis_dir=False, analysis_dir_qr=False, model_analysis_dir=False, model_comparison_dir=False):
 
         if fig_dir:
             pathlib.Path(self.fig_dir).mkdir(parents=True, exist_ok=True)
@@ -38,11 +38,20 @@ class Experiment():
             self.model_dir_qr = utfu.multi_replace(text=self.path_dict['model_dir_qr'], repl_dict=self.param_dict)
             pathlib.Path(self.model_dir_qr).mkdir(parents=True, exist_ok=True)            
 
-        if analysis_dir: # discriminator analysis
+        # analysis paths VAE
+        if analysis_dir:
             self.analysis_dir_fig = utfu.multi_replace(text=self.path_dict['analysis_base_dir_fig'], repl_dict=self.param_dict)
             self.analysis_dir_bin_count = utfu.multi_replace(text=self.path_dict['analysis_base_dir_bin_count'], repl_dict=self.param_dict)
             pathlib.Path(self.analysis_dir_fig).mkdir(parents=True, exist_ok=True)
             pathlib.Path(self.analysis_dir_bin_count).mkdir(parents=True, exist_ok=True)
+
+        if analysis_dir_qr:
+            analysis_base_dir_qr = utfu.multi_replace(text=self.path_dict['analysis_base_dir_qr'], repl_dict={'$run$': self.run_n})
+            self.analysis_dir_qr_mjj = os.path.join(analysis_base_dir_qr, 'mjj_spectra')
+            self.analysis_dir_qr_cuts = os.path.join(analysis_base_dir_qr, 'qr_cuts')
+            pathlib.Path(self.analysis_dir_qr_mjj).mkdir(parents=True, exist_ok=True)
+            pathlib.Path(self.analysis_dir_qr_cuts).mkdir(parents=True, exist_ok=True)
+
 
         if model_analysis_dir:
             self.model_analysis_dir_roc = os.path.join(self.model_analysis_dir, 'roc')

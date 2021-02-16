@@ -40,7 +40,7 @@ class JetSample():
 
     @classmethod
     def from_input_dir(cls, name, path, read_n=None, **cuts):
-        df = dr.DataReader(path).read_jet_features_from_dir_to_df(read_n=read_n, **cuts)
+        df, _ = dr.DataReader(path).read_jet_features_from_dir(read_n=read_n, features_to_df=True, **cuts)
         # convert any QR-selection colums from 0/1 to bool
         sel_cols = [c for c in df if c.startswith('sel')]
         for sel in sel_cols:  # convert selection column to bool
@@ -72,24 +72,27 @@ class JetSample():
             return filtered jet sample with events of index idx
             idx ... numpy array or pandas series of booleans
         '''
+        cls = type(self)
         if type(idx) is np.ndarray:
             new_dat = self.data.iloc[idx]
         else:
             new_dat = self.data[idx]
-        return JetSample(name=self.name, data=new_dat, title=' '.join([self.title,'filtered']))
+        return cls(name=self.name, data=new_dat, title=' '.join([self.title,'filtered']))
 
     def sample(self, n):
         ''' sample n events from sample at random '''
+        cls = type(self)
         new_dat = self.data.sample(n=n)
-        return JetSample(name=self.name+'_sampled', data=new_dat, title=' '.join([self.title,'sampled']) )
+        return cls(name=self.name+'_sampled', data=new_dat, title=' '.join([self.title,'sampled']) )
 
     def merge(self, other, shuffle=True):
         ''' merge this and other jet sample and return new union JetSample object '''
+        cls = type(self)
         features_merged = pd.concat([self.data, other.data], ignore_index=True)
         if shuffle:
             features_merged = features_merged.sample(frac=1.).reset_index(drop=True)
         names_merged = self.name + '_and_' + other.name
-        return JetSample(name=names_merged, data=features_merged)
+        return cls(name=names_merged, data=features_merged)
 
     def features(self):
         return list(self.data.columns)
@@ -148,6 +151,7 @@ class JetSample():
 def split_jet_sample_train_test(jet_sample, frac, new_names=None):
     
     """ shuffles and splits dataset into training-set and testing-set accorinding to fraction frac """
+    cls = type(jet_sample)
     new_names = new_names or (jet_sample.name+'Train', jet_sample.name+'Test')
     df_copy = jet_sample.data.copy()
 
@@ -156,4 +160,4 @@ def split_jet_sample_train_test(jet_sample, frac, new_names=None):
     first = shuffled[:int(N*frac)].reset_index(drop=True)
     second = shuffled[int(N*frac):].reset_index(drop=True)
     
-    return [JetSample(new_names[0], first), JetSample(new_names[1], second)]
+    return [cls(new_names[0], first), cls(new_names[1], second)]

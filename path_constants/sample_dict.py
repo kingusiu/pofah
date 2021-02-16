@@ -45,7 +45,7 @@ path_dict = {
                 'GtoWW45brReco': 'RSGraviton_WW_BROAD_13TeV_PU40_4.5TeV_reco',
         },
 
-        'sample_name' : {
+        'sample_names' : {
                 'qcdSide': 'QCD sideband',
                 'qcdSideAll' : 'QCD sideband all',
                 'qcdSideExt' : 'QCD sideband ext',
