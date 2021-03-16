@@ -35,7 +35,7 @@ class Experiment():
 
         # model paths QR
         if model_dir_qr:
-            self.model_dir_qr = utfu.multi_replace(text=self.path_dict['model_dir_qr'], repl_dict=self.param_dict)
+            self.model_dir_qr = utfu.multi_replace(text=self.path_dict['model_dir_qr'], repl_dict={**self.param_dict, '$run$': str(self.run_n)}) # qr paths supporting run_x format where x is value instead of entire 'run_x' string
             pathlib.Path(self.model_dir_qr).mkdir(parents=True, exist_ok=True)            
 
         # analysis paths VAE
@@ -46,7 +46,7 @@ class Experiment():
             pathlib.Path(self.analysis_dir_bin_count).mkdir(parents=True, exist_ok=True)
 
         if analysis_dir_qr:
-            analysis_base_dir_qr = utfu.multi_replace(text=self.path_dict['analysis_base_dir_qr'], repl_dict={'$run$': self.run_n})
+            analysis_base_dir_qr = utfu.multi_replace(text=self.path_dict['analysis_base_dir_qr'], repl_dict={**self.param_dict, '$run$': str(self.run_n)})
             self.analysis_dir_qr_mjj = os.path.join(analysis_base_dir_qr, 'mjj_spectra')
             self.analysis_dir_qr_cuts = os.path.join(analysis_base_dir_qr, 'qr_cuts')
             pathlib.Path(self.analysis_dir_qr_mjj).mkdir(parents=True, exist_ok=True)
