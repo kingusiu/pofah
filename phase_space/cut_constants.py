@@ -10,7 +10,7 @@ global_cuts = {
 sideband_cuts = {
     
     'sideband': 1.4,
-    'jXPt': 200, # require *either* of the jets to have pt > 200
+    # 'jXPt': 200, # require *either* of the jets to have pt > 200
 
 }
 

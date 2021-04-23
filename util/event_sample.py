@@ -4,7 +4,7 @@ import os
 import operator
 import pofah.util.result_writer as rw
 import pofah.path_constants.sample_dict as sd
-import pofah.util.converter as conv
+import pofah.util.data_converter as conv
 import pofah.util.utility_fun as utfu
 import sarewt.data_reader as dare
 
@@ -37,6 +37,8 @@ class EventSample():
     def from_input_dir(cls, name, path, read_n=None, **cuts):
         ''' reading data in all files in 'path' to event sample'''
         reader = dare.DataReader(path)
+        # import ipdb; ipdb.set_trace()
+        
         constituents, constituents_feature_names, jet_features, jet_feature_names = reader.read_events_from_dir(read_n=read_n, **cuts)
         return cls(name, constituents, jet_features, constituents_feature_names, jet_feature_names)
 

@@ -122,7 +122,7 @@ class JetSample():
         dat_other = other.data.drop(drop_col, axis=1) if drop_col else other.data
 
         if print_some:
-            idx = random.choices(range(len(self)-1), k=4) # compare 5 entries at random
+            idx = random.choices(range(len(self)-1), k=4) # compare 4 entries at random
             with np.printoptions(precision=3, suppress=True):
                 print('-- this: ', dat_self.iloc[idx].values)
                 print('-- other: ', dat_other.iloc[idx].values)
