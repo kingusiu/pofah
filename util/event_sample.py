@@ -72,6 +72,12 @@ class EventSample():
             self.converted_particles = converted_particles
         return self
 
+    def augment_by_cartesian(self):
+        cartesian_features = conv.eppt_to_xyz(self.particles)
+        self.particles = np.concatenate([self.particles, cartesian_features], axis=-1)
+        self.particles_features_names = ['eta', 'phi', 'pt', 'px', 'py', 'pz']
+        return self
+
     def dump(self,path):
         rw.write_event_sample_to_file(self.particles, self.jet_features.values, self.particle_feature_names, list(self.jet_features.columns), path)
 

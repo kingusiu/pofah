@@ -70,7 +70,7 @@ class JetSample():
     def cut(self, idx):
         ''' slice by row
             return filtered jet sample with events of index idx
-            idx ... numpy array or pandas series of booleans
+            idx ... numpy array, slice or pandas series of booleans
         '''
         cls = type(self)
         if type(idx) is np.ndarray:
