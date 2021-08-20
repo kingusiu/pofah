@@ -15,7 +15,14 @@ class SamplePathDirFactory():
         self.sample_files = path_dict['file_names']
 
     def update_base_path(self, repl_dict):
+        ''' fill base path with current parameters '''
         self.base_dir = utfu.multi_replace(self.base_dir, repl_dict)
+        return self
+
+    def extend_base_path(self, *extentions):
+        ''' extend base path with arbitrary subdirectories '''
+        for ext in extentions:
+            self.base_dir = os.path.join(self.base_dir, ext)
         return self
 
     def sample_dir_path(self, id, mkdir=False):
