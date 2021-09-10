@@ -4,12 +4,13 @@ import pofah.path_constants.sample_dict as sd
 path_dict = copy.deepcopy(sd.path_dict)
 
 update_dict = {
-	'base_dir' : '/data/t3home000/bmaier/CASE/',
+	'base_dir' : '/eos/cms/store/user/bmaier/cms/case/samples/ul/',
 
 	'sample_dir' : {
-		'qcdSig': 'BB_UL_MC_small_sig',
-		'qcdSide': 'BB_UL_MC_small_side',
-		'qcdSideExt': 'BB_UL_MC_small_side',
+		'qcdSig': 'BB_UL_MC_small_sig/train',
+		'qcdSigExt': 'BB_UL_MC_small_sig/test',
+		'qcdSide': 'BB_UL_MC_small_side/train',
+		'qcdSideExt': 'BB_UL_MC_small_side/test',
 	},
 }
 
