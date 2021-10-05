@@ -148,6 +148,27 @@ class JetSample():
         return self.name.replace(' ', '_')
         
 
+
+class JetSampleLatent(JetSample):
+    """
+        jet sample class with latent space features
+    """
+
+    def add_latent_representation(self, latent_feat):
+
+        df_lat = pd.DataFrame(latent_feat, columns=['z_{}'.format(i+1) for i in range(latent_feat.shape[1])])
+        self.data = pd.concat([self.data, df_lat], axis=1)
+
+        return self
+
+    def get_latent_representation(self):
+
+        sel_cols = [c for c in self.data if c.startswith('z_')]
+
+        return self.data[sel_cols]
+
+
+
 def split_jet_sample_train_test(jet_sample, frac, new_names=None):
     
     """ shuffles and splits dataset into training-set and testing-set accorinding to fraction frac """
