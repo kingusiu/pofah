@@ -161,11 +161,11 @@ class JetSampleLatent(JetSample):
 
         return self
 
-    def get_latent_representation(self):
+    def get_latent_representation(self, as_array=False):
 
         sel_cols = [c for c in self.data if c.startswith('z_')]
 
-        return self.data[sel_cols]
+        return self.data[sel_cols].values if as_array else self.data[sel_cols]
 
 
 

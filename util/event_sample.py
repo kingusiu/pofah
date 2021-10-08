@@ -37,7 +37,6 @@ class EventSample():
     def from_input_dir(cls, name, path, read_n=None, **cuts):
         ''' reading data in all files in 'path' to event sample'''
         reader = dare.DataReader(path)
-        # import ipdb; ipdb.set_trace()
         
         constituents, constituents_feature_names, jet_features, jet_feature_names = reader.read_events_from_dir(read_n=read_n, **cuts)
         return cls(name, constituents, jet_features, constituents_feature_names, jet_feature_names)
@@ -46,11 +45,12 @@ class EventSample():
         return len(self.jet_features)
 
     def __getitem__(self, idx):
+        cls = type(self)
         # if idx is a string, return jet feature
         if isinstance(idx, str):
             return self.jet_features[idx]
         # else return sliced event sample
-        return EventSample(name=self.name+'Sliced', particles=self.particles[idx], jet_features=self.jet_features[idx], particle_feature_names=self.particle_feature_names)
+        return cls(name=self.name+'Sliced', particles=self.particles[idx], jet_features=self.jet_features[idx], particle_feature_names=self.particle_feature_names)
 
     def get_particles(self):
         ''' returning particles per jet as [2 x N x 100 x 3] '''
@@ -80,6 +80,14 @@ class EventSample():
 
     def dump(self,path):
         rw.write_event_sample_to_file(self.particles, self.jet_features.values, self.particle_feature_names, list(self.jet_features.columns), path)
+
+    def merge(self, other):
+        ''' merge this and other jet sample and return new union JetSample object '''
+        cls = type(self)
+        particles_merged = np.concatenate([self.particles, cartesian_features], axis=0)
+        features_merged = pd.concat([self.jet_features, other.jet_features], ignore_index=True)
+        names_merged = self.name + '_and_' + other.name
+        return cls(name=names_merged, particles=particles_merged, jet_features=features_merged, particle_feature_names=self.particle_feature_names)
 
 
 class CaseEventSample(EventSample):
