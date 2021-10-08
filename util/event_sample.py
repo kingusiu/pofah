@@ -84,7 +84,7 @@ class EventSample():
     def merge(self, other):
         ''' merge this and other jet sample and return new union JetSample object '''
         cls = type(self)
-        particles_merged = np.concatenate([self.particles, cartesian_features], axis=0)
+        particles_merged = np.concatenate([self.particles, other.particles], axis=0)
         features_merged = pd.concat([self.jet_features, other.jet_features], ignore_index=True)
         names_merged = self.name + '_and_' + other.name
         return cls(name=names_merged, particles=particles_merged, jet_features=features_merged, particle_feature_names=self.particle_feature_names)
