@@ -54,7 +54,7 @@ class EventSample():
 
     def get_particles(self, jet_n=None):
         ''' returning particles per jet as [N x 100 x 3] if jet_n in {0,1} else [2 x N x 100 x 3] for both jets as tuple if jet_n is none'''
-        if jet_n:
+        if jet_n is not None:
             return self.particles[:,jet_n,:,:]
         return [self.particles[:,0,:,:], self.particles[:,1,:,:]]
 
