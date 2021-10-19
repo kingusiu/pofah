@@ -1,18 +1,7 @@
 import numpy as np
 
-def nan_or_inf_idx(array):
-	idx = []
-	idx.extend(np.argwhere(np.isnan(array))[:,0]) # events that have at least one particle with a nan value
-	idx.extend(np.argwhere(np.isinf(array))[:,0]) # events that have at least one particle with an inf value
-	return np.unique(np.asarray(idx))
-
-def delete_nan_and_inf_events(constituents, features):
-	idx = nan_or_inf_idx(constituents)
-	print('[converter.xyze_to_eppt]: {} NaN or inf values found. deleting affected events'.format(len(idx)))
-	return np.delete(constituents, idx, axis=0), np.delete(features, idx, axis=0)
-
 def xyze_to_eppt(constituents):
-	''' converts an array [N x 2 x 100, 4] of particles
+	''' converts an array [N x 2 x 100, 4] of constituents
 		from px, py, pz, E to eta, phi, pt (mass omitted)
 	'''
 	PX, PY, PZ, E = range(4)
@@ -22,8 +11,9 @@ def xyze_to_eppt(constituents):
 
 	return np.stack([eta, phi, pt], axis=3)
 
+
 def eppt_to_xyz(constituents):
-	''' converts an array [N x 2 x 100, 4] of particles
+	''' converts an array [N x 2 x 100, 4] of constituents
 		from eta, phi, pt to px, py, pz (energy omitted)
 	'''
 	ETA, PHI, PT = range(3)
@@ -32,3 +22,19 @@ def eppt_to_xyz(constituents):
 	pz = constituents[:,:,:,PT] * np.sinh(constituents[:,:,:,ETA])
 
 	return np.stack([px,py,pz], axis=3)
+
+
+def normalize_features(constituents, feature_names):
+    ''' normalize dataset
+        cylindrical & cartesian coordinates: gaussian norm
+        pt: min-max norm
+
+    '''
+    # min-max normalize pt
+    idx_pt = feature_names.index('pt')
+    constituents[:,:,idx_pt] = min_max_norm(constituents, idx_pt)
+    # standard normalize angles and cartesians
+    for idx, _ in enumerate([n for n in feature_names if 'pt' not in feature_names]):
+        constituents[:,:,idx] = std_norm(constituents, idx)
+    return constituents
+

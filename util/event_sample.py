@@ -4,7 +4,7 @@ import os
 import operator
 import pofah.util.result_writer as rw
 import pofah.path_constants.sample_dict as sd
-import pofah.util.data_converter as conv
+import pofah.data_processing.data_converter as conv
 import pofah.util.utility_fun as utfu
 import sarewt.data_reader as dare
 
@@ -83,12 +83,12 @@ class EventSample():
     def dump(self,path):
         rw.write_event_sample_to_file(self.particles, self.jet_features.values, self.particle_feature_names, list(self.jet_features.columns), path)
 
-    def merge(self, other):
+    def merge(self, other, name=None):
         ''' merge this and other jet sample and return new union JetSample object '''
         cls = type(self)
         particles_merged = np.concatenate([self.particles, other.particles], axis=0)
         features_merged = pd.concat([self.jet_features, other.jet_features], ignore_index=True)
-        names_merged = self.name + '_and_' + other.name
+        names_merged = name or self.name + '_and_' + other.name
         return cls(name=names_merged, particles=particles_merged, jet_features=features_merged, particle_feature_names=self.particle_feature_names)
 
 
