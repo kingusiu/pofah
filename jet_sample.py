@@ -154,16 +154,16 @@ class JetSampleLatent(JetSample):
         jet sample class with latent space features
     """
 
-    def add_latent_representation(self, latent_feat):
+    def add_latent_representation(self, latent_feat, feat_prefix='z'):
 
-        df_lat = pd.DataFrame(latent_feat, columns=['z_{}'.format(i+1) for i in range(latent_feat.shape[1])])
+        df_lat = pd.DataFrame(latent_feat, columns=['{}_{}'.format(feat_prefix, i+1) for i in range(latent_feat.shape[1])])
         self.data = pd.concat([self.data, df_lat], axis=1)
 
         return self
 
-    def get_latent_representation(self, as_array=False):
+    def get_latent_representation(self, feat_prefix='z', as_array=False):
 
-        sel_cols = [c for c in self.data if c.startswith('z_')]
+        sel_cols = [c for c in self.data if c.startswith(feat_prefix+'_')]
 
         return self.data[sel_cols].values if as_array else self.data[sel_cols]
 
