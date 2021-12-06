@@ -173,9 +173,11 @@ class JetSampleLatent(JetSample):
 
         return self
 
-    def get_latent_representation(self, latent_key='latent_ae'):
+    def get_latent_representation(self, latent_key='latent_ae', per_jet=True):
 
         try:
+            if per_jet:
+                return self.latent_reps[latent_key][:,0,:], self.latent_reps[latent_key][:,1,:] 
             return self.latent_reps[latent_key]
         except KeyError as e:
             print('Error: no latent representation for ' + latent_key + ' stored in sample')
