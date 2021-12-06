@@ -16,7 +16,7 @@ def write_jet_sample_to_file(jet_features, jet_feature_names, file_path):
 
 def write_jet_sample_latent_to_file(jet_features, jet_feature_names, latent_rep_dict, file_path):
     write_jet_sample_to_file(jet_features, jet_feature_names, file_path)
-    with h5py.File(file_path, 'w') as f:
+    with h5py.File(file_path, 'a') as f:
         for key, data in latent_rep_dict.items():
             f.create_dataset(key, data=data, compression='gzip', dtype='float32')
 
