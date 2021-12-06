@@ -130,14 +130,18 @@ class JetSample():
 
         return dat_self.equals(dat_other)
 
-    
-    def dump(self, path):
+    def _convert_data_for_dump(self):
         dump_data = self.data
         sel_cols = [c for c in self.data if c.startswith('sel')]
         if sel_cols: # convert selection column to int for writing
             dump_data = self.data.copy()
             for sel in sel_cols:
                 dump_data[sel] = dump_data[sel].astype(int)
+        return dump_data
+
+
+    def dump(self, path):
+        dump_data = self._convert_data_for_dump()        
         rw.write_jet_sample_to_file(dump_data.values, list(dump_data.columns), path)
         print('written data sample to {}'.format(path))
         
@@ -154,19 +158,35 @@ class JetSampleLatent(JetSample):
         jet sample class with latent space features
     """
 
-    def add_latent_representation(self, latent_feat, feat_prefix='z'):
+    def __init__(self, *args, **kwargs):
+        super(JetSampleLatent, self).__init__(*args, **kwargs)
+        self.latent_reps = {}
 
-        df_lat = pd.DataFrame(latent_feat, columns=['{}_{}'.format(feat_prefix, i+1) for i in range(latent_feat.shape[1])])
-        self.data = pd.concat([self.data, df_lat], axis=1)
+    def add_latent_representation(self, latent_rep, latent_key='latent_ae'):
+
+        '''
+            add latent represenation to jet sample (from autoencoding, pca, etc)
+            :param latent_rep: numpy ndarray with latent space representation of size [N_sample x 2 jets x k latent features]
+        '''
+
+        self.latent_reps[latent_key] = latent_rep
 
         return self
 
-    def get_latent_representation(self, feat_prefix='z', as_array=False):
+    def get_latent_representation(self, latent_key='latent_ae'):
 
-        sel_cols = [c for c in self.data if c.startswith(feat_prefix+'_')]
+        try:
+            return self.latent_reps[latent_key]
+        except KeyError as e:
+            print('Error: no latent representation for ' + latent_key + ' stored in sample')
+            return np.empty()
 
-        return self.data[sel_cols].values if as_array else self.data[sel_cols]
 
+    def dump(self, path):
+        dump_data = self._convert_data_for_dump()
+        rw.write_jet_sample_latent_to_file(dump_data.values, list(dump_data.columns), self.latent_reps, path)
+        print('written data sample to {}'.format(path))
+        
 
 
 def split_jet_sample_train_test(jet_sample, frac, new_names=None):
