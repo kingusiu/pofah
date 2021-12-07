@@ -1,6 +1,7 @@
 import pandas as pd
 import random
 import numpy as np
+import h5py
 
 import sarewt.data_reader as dr
 import pofah.util.result_writer as rw
@@ -14,14 +15,14 @@ class JetSample():
     FEAT_NAMES = ['mJJ', 'j1Pt', 'j1Eta', 'j1Phi', 'j1M', 'j1E', 'j2Pt', 'j2M', 'j2E', 'DeltaEtaJJ', 'DeltaPhiJJ']
     FEAT_IDX = dict(zip(FEAT_NAMES, range(len(FEAT_NAMES))))
     
-    def __init__(self, name, data, title=None):
+    def __init__(self, name, features, title=None):
         '''
             name = sample id (used in path dicts)
             data = jet features as pandas dataframe
             title = string used for plot titles
         '''
         self.name = name
-        self.data = data # assuming data passed as dataframe
+        self.data = features # assuming data passed as dataframe
         self.title = title or name
 
     @classmethod
@@ -158,9 +159,22 @@ class JetSampleLatent(JetSample):
         jet sample class with latent space features
     """
 
-    def __init__(self, *args, **kwargs):
-        super(JetSampleLatent, self).__init__(*args, **kwargs)
+    def __init__(self, name, features, latent_key=None, latent_data=None):
+        super(JetSampleLatent, self).__init__(name=name, features=features)
         self.latent_reps = {}
+        if latent_key is not None:
+            latent_reps[latent_key] = latent_data
+
+
+    @classmethod
+    def from_input_file(cls, name, path, latent_key='latent_ae', **cuts):
+        df = dr.DataReader(path).read_jet_features_from_file(features_to_df=True, **cuts)
+        # convert any QR-selection colums from 0/1 to bool
+        sel_cols = [c for c in df if c.startswith('sel')]
+        for sel in sel_cols:  # convert selection column to bool
+            df[sel] = df[sel].astype(bool)
+        ff = h5py.File(path,'r')
+        return cls(name=name, features=df, latent_key=latent_key, latent_data=np.array(ff.get(latent_key)))
 
     def add_latent_representation(self, latent_rep, latent_key='latent_ae'):
 
