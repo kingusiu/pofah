@@ -163,7 +163,7 @@ class JetSampleLatent(JetSample):
         super(JetSampleLatent, self).__init__(name=name, features=features)
         self.latent_reps = {}
         if latent_key is not None:
-            latent_reps[latent_key] = latent_data
+            self.latent_reps[latent_key] = latent_data
 
 
     @classmethod
@@ -173,8 +173,10 @@ class JetSampleLatent(JetSample):
         sel_cols = [c for c in df if c.startswith('sel')]
         for sel in sel_cols:  # convert selection column to bool
             df[sel] = df[sel].astype(bool)
+        # read latent representation data-structure
         ff = h5py.File(path,'r')
         return cls(name=name, features=df, latent_key=latent_key, latent_data=np.array(ff.get(latent_key)))
+
 
     def add_latent_representation(self, latent_rep, latent_key='latent_ae'):
 
