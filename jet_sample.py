@@ -171,15 +171,15 @@ class JetSampleLatent(JetSample):
 
 
     @classmethod
-    def from_input_file(cls, name, path, latent_key='latent_ae', **cuts):
-        df = dr.DataReader(path).read_jet_features_from_file(features_to_df=True, **cuts)
+    def from_input_file(cls, name, path, latent_key='latent_ae', read_n=None, **cuts):
+        df = dr.DataReader(path).read_jet_features_from_file(features_to_df=True, **cuts)[:read_n]
         # convert any QR-selection colums from 0/1 to bool
         sel_cols = [c for c in df if c.startswith('sel')]
         for sel in sel_cols:  # convert selection column to bool
             df[sel] = df[sel].astype(bool)
         # read latent representation data-structure
         ff = h5py.File(path,'r')
-        return cls(name=name, features=df, latent_key=latent_key, latent_data=np.array(ff.get(latent_key)))
+        return cls(name=name, features=df, latent_key=latent_key, latent_data=np.array(ff.get(latent_key))[:read_n])
 
 
     def add_latent_representation(self, latent_rep, latent_key='latent_ae'):
