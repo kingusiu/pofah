@@ -54,8 +54,8 @@ class JetSample():
         return cls(event_sample.name, jet_features)
 
     @classmethod
-    def from_latent_jet_sample(cls, jet_sample):
-        return cls(jet_sample.name, jet_sample.features, jet_sample.title)
+    def from_latent_jet_sample(cls, latent_jet_sample):
+        return cls(latent_jet_sample.name, latent_jet_sample.data, latent_jet_sample.title)
         
     def __getitem__(self, key):
         ''' slice by column
