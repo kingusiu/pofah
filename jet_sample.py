@@ -224,3 +224,19 @@ def split_jet_sample_train_test(jet_sample, frac, new_names=None):
     second = shuffled[int(N*frac):].reset_index(drop=True)
     
     return [cls(new_names[0], first), cls(new_names[1], second)]
+
+
+
+def get_mjj_binned_sample_center_bin(sample, mjj_peak, window_pct=20):
+    '''
+        return filtered jet sample that includes only events around mjj_peak
+    '''
+
+    cls = type(jet_sample)
+
+    left_edge, right_edge = mjj_peak * (1. - window_pct / 100.), mjj_peak * (1. + window_pct / 100.)
+    data_center_bin = sample[[(sample['mJJ'] >= left_edge) & (sample['mJJ'] <= right_edge)]]
+
+    return cls(sample.name, data_center_bin, title=sample.name + ' ' + str(left_edge / 1000) + ' <= mJJ <= ' + str(right_edge / 1000))
+
+
