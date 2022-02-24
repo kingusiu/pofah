@@ -232,11 +232,31 @@ def get_mjj_binned_sample_center_bin(sample, mjj_peak, window_pct=20):
         return filtered jet sample that includes only events around mjj_peak
     '''
 
-    cls = type(jet_sample)
+    cls = type(sample)
 
     left_edge, right_edge = mjj_peak * (1. - window_pct / 100.), mjj_peak * (1. + window_pct / 100.)
     data_center_bin = sample[[(sample['mJJ'] >= left_edge) & (sample['mJJ'] <= right_edge)]]
 
     return cls(sample.name, data_center_bin, title=sample.name + ' ' + str(left_edge / 1000) + ' <= mJJ <= ' + str(right_edge / 1000))
 
+
+def get_mjj_binned_sample(sample, mjj_peak, window_pct=20):
+
+    '''
+        return split jet samples left of, right of and around the mjj peak
+    '''
+
+    cls = type(sample)
+
+    left_edge, right_edge = mjj_peak * (1. - window_pct / 100.), mjj_peak * (1. + window_pct / 100.)
+
+    left_bin = sample[[sample['mJJ'] < left_edge]]
+    center_bin = sample[[(sample['mJJ'] >= left_edge) & (sample['mJJ'] <= right_edge)]]
+    right_bin = sample[[sample['mJJ'] > right_edge]]
+
+    left_bin_ds = cls(sample.name, left_bin, title=sample.name + ' mJJ < ' + str(left_edge / 1000))
+    center_bin_ds = cls(sample.name, center_bin, title=sample.name + ' ' + str(left_edge / 1000) + ' <= mJJ <= ' + str(right_edge / 1000))
+    right_bin_ds = cls(sample.name, right_bin, title=sample.name + ' mJJ > ' + str(right_edge / 1000))
+
+    return [left_bin_ds, center_bin_ds, right_bin_ds]
 
