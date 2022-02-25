@@ -58,21 +58,24 @@ class JetSample():
         return cls(latent_jet_sample.name, latent_jet_sample.data, latent_jet_sample.title)
         
     def __getitem__(self, key):
-        ''' slice by column
+        ''' slice by column or row-slice
             return numpy array of values if single key is passed, else whole dataframe subslice with column names if list of strings is passed: 
             sample['key'] returns numpy array holding values(!) of column 'key'
             sample[['key']] returns dataframe with single column 'key'
+            sample[:3] or any other slice returns a slice of the dataframe
         '''
+        if isinstance(key, slice):
+            return self.data[key]
         if isinstance(key, str):
             return self.data[key].values 
         [k] = key # extract elements from list
         return self.data[k]
     
-    def __len__( self ):
+    def __len__(self):
         return len(self.data)
     
 
-    def cut(self, idx):
+    def cut(self, idx): # todo: rename to 'filter'
         ''' slice by row
             return filtered jet sample with events of index idx
             idx ... numpy array, slice or pandas series of booleans
