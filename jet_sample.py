@@ -22,7 +22,7 @@ class JetSample():
             title = string used for plot titles
         '''
         self.name = name
-        self.data = features # assuming data passed as dataframe
+        self.features = features # assuming data passed as dataframe
         self.title = title or name
 
     @classmethod
@@ -65,14 +65,14 @@ class JetSample():
             sample[:3] or any other slice returns a slice of the dataframe
         '''
         if isinstance(key, slice):
-            return self.data[key]
+            return self.features[key]
         if isinstance(key, str):
-            return self.data[key].values 
+            return self.features[key].values 
         [k] = key # extract elements from list
-        return self.data[k]
+        return self.features[k]
     
     def __len__(self):
-        return len(self.data)
+        return len(self.features)
     
 
     def cut(self, idx): # todo: rename to 'filter'
@@ -82,52 +82,52 @@ class JetSample():
         '''
         cls = type(self)
         if type(idx) is np.ndarray:
-            new_dat = self.data.iloc[idx]
+            new_dat = self.features.iloc[idx]
         else:
-            new_dat = self.data[idx]
-        return cls(name=self.name, data=new_dat, title=' '.join([self.title,'filtered']))
+            new_dat = self.features[idx]
+        return cls(name=self.name, features=new_dat, title=' '.join([self.title,'filtered']))
 
     def sample(self, n):
         ''' sample n events from sample at random '''
         cls = type(self)
-        new_dat = self.data.sample(n=n)
-        return cls(name=self.name+'_sampled', data=new_dat, title=' '.join([self.title,'sampled']) )
+        new_dat = self.features.sample(n=n)
+        return cls(name=self.name+'_sampled', features=new_dat, title=' '.join([self.title,'sampled']) )
 
     def merge(self, other, shuffle=True):
         ''' merge this and other jet sample and return new union JetSample object '''
         cls = type(self)
-        features_merged = pd.concat([self.data, other.data], ignore_index=True)
+        features_merged = pd.concat([self.features, other.features], ignore_index=True)
         if shuffle:
             features_merged = features_merged.sample(frac=1.).reset_index(drop=True)
         names_merged = self.name + '_and_' + other.name
-        return cls(name=names_merged, data=features_merged)
+        return cls(name=names_merged, features=features_merged)
 
     def features(self):
-        return list(self.data.columns)
+        return list(self.features.columns)
         
     def add_feature(self, label, value):
-        self.data[ label ] = value
+        self.features[ label ] = value
         
     def accepted(self, quantile, feature=None):
         q_key = 'sel_q{:02}'.format(int(quantile*100)) 
-        if q_key not in self.data:
+        if q_key not in self.features:
             print('selection for quantile {} not available for this data sample'.format(quantile))
             return
-        return self.data[self.data[q_key]][feature].values if feature else self.data[self.data[q_key]]
+        return self.features[self.features[q_key]][feature].values if feature else self.features[self.features[q_key]]
         
     def rejected(self, quantile, feature=None):
         q_key = 'sel_q{:02}'.format(int(quantile*100)) 
-        if q_key not in self.data:
+        if q_key not in self.features:
             print('selection for quantile {} not available for this data sample'.format(quantile))
             return
-        return self.data[~self.data[q_key]][feature].values if feature else self.data[~self.data[q_key]]
+        return self.features[~self.features[q_key]][feature].values if feature else self.features[~self.features[q_key]]
     
     def describe(self, feature):
-        print('mean = {0:.2f}, min = {1:.2f}, max = {2:.2f}'.format(self.data[feature].mean(),self.data[feature].min(), self.data[feature].max()))
+        print('mean = {0:.2f}, min = {1:.2f}, max = {2:.2f}'.format(self.features[feature].mean(),self.features[feature].min(), self.features[feature].max()))
 
     def equals(self, other, drop_col=None, print_some=False):
-        dat_self = self.data.drop(drop_col, axis=1) if drop_col else self.data
-        dat_other = other.data.drop(drop_col, axis=1) if drop_col else other.data
+        dat_self = self.features.drop(drop_col, axis=1) if drop_col else self.features
+        dat_other = other.features.drop(drop_col, axis=1) if drop_col else other.features
 
         if print_some:
             idx = random.choices(range(len(self)-1), k=4) # compare 4 entries at random
@@ -139,10 +139,10 @@ class JetSample():
         return dat_self.equals(dat_other)
 
     def _convert_data_for_dump(self):
-        dump_data = self.data
-        sel_cols = [c for c in self.data if c.startswith('sel')]
+        dump_data = self.features
+        sel_cols = [c for c in self.features if c.startswith('sel')]
         if sel_cols: # convert selection column to int for writing
-            dump_data = self.data.copy()
+            dump_data = self.features.copy()
             for sel in sel_cols:
                 dump_data[sel] = dump_data[sel].astype(int)
         return dump_data
@@ -166,8 +166,8 @@ class JetSampleLatent(JetSample):
         jet sample class with latent space features
     """
 
-    def __init__(self, name, features, latent_key=None, latent_data=None):
-        super(JetSampleLatent, self).__init__(name=name, features=features)
+    def __init__(self, name, features, latent_key=None, latent_data=None, title=None):
+        super(JetSampleLatent, self).__init__(name=name, features=features, title=title)
         self.latent_reps = {}
         if latent_key is not None:
             self.latent_reps[latent_key] = latent_data
@@ -238,9 +238,18 @@ def get_mjj_binned_sample_center_bin(sample, mjj_peak, window_pct=20):
     cls = type(sample)
 
     left_edge, right_edge = mjj_peak * (1. - window_pct / 100.), mjj_peak * (1. + window_pct / 100.)
-    data_center_bin = sample[[(sample['mJJ'] >= left_edge) & (sample['mJJ'] <= right_edge)]]
+    idcs = (sample['mJJ'] >= left_edge) & (sample['mJJ'] <= right_edge)
+    data_center_bin = sample[[idcs]]
 
-    return cls(sample.name, data_center_bin, title=sample.name + ' ' + str(left_edge / 1000) + ' <= mJJ <= ' + str(right_edge / 1000))
+    if isinstance(sample, JetSampleLatent):
+        latent_key = 'latent_ae' # todo: get key from object
+        latent_data = sample.latent_reps[latent_key][idcs]
+        sample_binned = cls(name=sample.name, features=data_center_bin, latent_key=latent_key, latent_data=latent_data, \
+            title=sample.name + ' ' + str(left_edge / 1000) + ' <= mJJ <= ' + str(right_edge / 1000))
+    else:
+        sample_binned = cls(sample.name, data_center_bin, title=sample.name + ' ' + str(left_edge / 1000) + ' <= mJJ <= ' + str(right_edge / 1000))
+
+    return sample_binned
 
 
 def get_mjj_binned_sample(sample, mjj_peak, window_pct=20):
