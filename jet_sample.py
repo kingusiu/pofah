@@ -104,7 +104,11 @@ class JetSample():
 
     def features(self):
         return list(self.features.columns)
-        
+
+    @property
+    def data(self):
+        return self.features
+    
     def add_feature(self, label, value):
         self.features[ label ] = value
         
