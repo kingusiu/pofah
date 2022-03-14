@@ -75,7 +75,7 @@ class JetSample():
         return len(self.features)
     
 
-    def cut(self, idx): # todo: rename to 'filter'
+    def filter(self, idx):
         ''' slice by row
             return filtered jet sample with events of index idx
             idx ... numpy array, slice or pandas series of booleans
