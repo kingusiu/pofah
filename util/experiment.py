@@ -36,7 +36,7 @@ class Experiment():
 
         # model paths QR
         if model_dir_qr:
-            self.model_dir_qr = utfu.multi_replace(text=self.path_dict['model_dir_qr'], repl_dict={**self.param_dict, '$run$': str(self.run_n)}) # qr paths supporting run_x format where x is value instead of entire 'run_x' string
+            self.model_dir_qr = utfu.multi_replace(text=self.path_dict['model_dir_qr'], repl_dict=self.param_dict) # qr paths supporting run_x format where x is value instead of entire 'run_x' string
             pathlib.Path(self.model_dir_qr).mkdir(parents=True, exist_ok=True)            
 
         # analysis paths VAE

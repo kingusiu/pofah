@@ -10,8 +10,8 @@ import pofah.util.utility_fun as utfu
 class SamplePathDirFactory():
 
     def __init__(self, path_dict):
-        self.base_dir = path_dict['base_dir']
-        self.sample_dir = path_dict['sample_dir']
+        self.base_dir = path_dict['base_dir'] # str
+        self.sample_dir = path_dict['sample_dir'] # dict
         self.sample_files = path_dict['file_names']
 
     def update_base_path(self, repl_dict):

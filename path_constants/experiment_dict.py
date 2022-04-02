@@ -14,6 +14,6 @@ path_dict = {
 
     # QR directory pattern: run_x/sig_y/xsec_z/loss_u
 
-    'model_dir_qr': '/eos/home-k/kiwoznia/data/QR_models/run_$run$',
+    'model_dir_qr': '/eos/home-k/kiwoznia/data/QR_models/vae_run_$run_n_vae$/qr_run_$run_n_qr$',
     'analysis_base_dir_qr': '/eos/user/k/kiwoznia/data/QR_results/analysis/run_$run$/sig_$sig_name$/xsec_$sig_xsec$/loss_$loss_strat$',
 }

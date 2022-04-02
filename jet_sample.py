@@ -2,6 +2,7 @@ import pandas as pd
 import random
 import numpy as np
 import h5py
+from typing import Union
 
 import sarewt.data_reader as dr
 import pofah.util.result_writer as rw
@@ -75,10 +76,10 @@ class JetSample():
         return len(self.features)
     
 
-    def filter(self, idx):
+    def filter(self, idx:Union[np.ndarray,pd.Series,slice]): # -> pofah.jet_sample.JetSample:
         ''' slice by row
             return filtered jet sample with events of index idx
-            idx ... numpy array, slice or pandas series of booleans
+            idx ... numpy array (int or boolean), pandas series of booleans or slice
         '''
         cls = type(self)
         if type(idx) is np.ndarray:
@@ -87,11 +88,13 @@ class JetSample():
             new_dat = self.features[idx]
         return cls(name=self.name, features=new_dat, title=' '.join([self.title,'filtered']))
 
+
     def sample(self, n):
         ''' sample n events from sample at random '''
         cls = type(self)
         new_dat = self.features.sample(n=n)
         return cls(name=self.name+'_sampled', features=new_dat, title=' '.join([self.title,'sampled']) )
+
 
     def merge(self, other, shuffle=True):
         ''' merge this and other jet sample and return new union JetSample object '''
@@ -101,6 +104,7 @@ class JetSample():
             features_merged = features_merged.sample(frac=1.).reset_index(drop=True)
         names_merged = self.name + '_and_' + other.name
         return cls(name=names_merged, features=features_merged)
+
 
     def features(self):
         return list(self.features.columns)
