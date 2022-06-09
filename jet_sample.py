@@ -237,6 +237,19 @@ def split_jet_sample_train_test(jet_sample, frac, new_names=None):
     return [cls(new_names[0], first), cls(new_names[1], second)]
 
 
+def get_kfold_jet_sample_train(jet_sample, which_fold=-1, nfold=-1, new_name=None):
+    
+    """ shuffles dataset (in a reproducible fashion) and extracts k-th chunk """
+    cls = type(jet_sample)
+    new_name = new_name
+    df_copy = jet_sample.data.copy()
+
+    N = df_copy.shape[0]
+    shuffled = df_copy.sample(frac=1.,random_state=12345).reset_index(drop=True) # shuffle original data
+    chunk = shuffled[int((which_fold/nfold)*int(N)):int(((which_fold+1)/nfold)*int(N))].reset_index(drop=True)
+    
+    return cls(new_name, chunk)
+
 
 def get_mjj_binned_sample_center_bin(sample, mjj_peak, window_pct=20):
     '''
