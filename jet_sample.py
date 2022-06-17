@@ -109,7 +109,7 @@ class JetSample():
         return list(self.features.columns)
 
     @property
-    def features(self):
+    def data(self):
         return self.features
     
     def add_feature(self, label, value):
@@ -131,11 +131,10 @@ class JetSample():
     
     def describe(self, feature=None):
         if feature is not None:
-            print('mean = {0:.2f}, min = {1:.2f}, max = {2:.2f}'.format(self.features[feature].mean(),self.features[feature].min(), self.features[feature].max()))
+            print('{}: mean = {0:.2f}, min = {1:.2f}, max = {2:.2f}'.format(feature, self.features[feature].mean(),self.features[feature].min(), self.features[feature].max()))
         else:
             for feature in self.features:
-            print('mean = {0:.2f}, min = {1:.2f}, max = {2:.2f}'.format(self.features[feature].mean(),self.features[feature].min(), self.features[feature].max()))
-
+                print('{}: mean = {0:.2f}, min = {1:.2f}, max = {2:.2f}'.format(feature, self.features[feature].mean(),self.features[feature].min(), self.features[feature].max()))
 
     def equals(self, other, drop_col=None, print_some=False):
         dat_self = self.features.drop(drop_col, axis=1) if drop_col else self.features
