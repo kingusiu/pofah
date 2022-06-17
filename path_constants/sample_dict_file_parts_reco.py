@@ -24,6 +24,12 @@ update_dict = {
                 # prepared train and test split data for QR training
                 'qcdSigAllTrainReco': 'qcd_sqrtshatTeV_13TeV_PU40_NEW_ALL_Train_signalregion_parts',
                 'qcdSigAllTestReco': 'qcd_sqrtshatTeV_13TeV_PU40_NEW_ALL_Test_signalregion_parts',
+                'qcdSigAllTrain30pct': 'qcd_sqrtshatTeV_13TeV_PU40_NEW_ALL_Train_signalregion_parts',
+                'qcdSigAllTrain50pct': 'qcd_sqrtshatTeV_13TeV_PU40_NEW_ALL_Train_signalregion_parts',
+                'qcdSigAllTrain70pct': 'qcd_sqrtshatTeV_13TeV_PU40_NEW_ALL_Train_signalregion_parts',
+                'qcdSigAllTest30pct': 'qcd_sqrtshatTeV_13TeV_PU40_NEW_ALL_Test_signalregion_parts',
+                'qcdSigAllTest50pct': 'qcd_sqrtshatTeV_13TeV_PU40_NEW_ALL_Test_signalregion_parts',
+                'qcdSigAllTest70pct': 'qcd_sqrtshatTeV_13TeV_PU40_NEW_ALL_Test_signalregion_parts',
 	},
 }
 

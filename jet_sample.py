@@ -105,16 +105,15 @@ class JetSample():
         names_merged = self.name + '_and_' + other.name
         return cls(name=names_merged, features=features_merged)
 
-
-    def features(self):
+    def feature_names(self):
         return list(self.features.columns)
 
     @property
-    def data(self):
+    def features(self):
         return self.features
     
     def add_feature(self, label, value):
-        self.features[ label ] = value
+        self.features[label] = value
         
     def accepted(self, quantile, feature=None):
         q_key = 'sel_q{:02}'.format(int(quantile*100)) 
@@ -130,8 +129,13 @@ class JetSample():
             return
         return self.features[~self.features[q_key]][feature].values if feature else self.features[~self.features[q_key]]
     
-    def describe(self, feature):
-        print('mean = {0:.2f}, min = {1:.2f}, max = {2:.2f}'.format(self.features[feature].mean(),self.features[feature].min(), self.features[feature].max()))
+    def describe(self, feature=None):
+        if feature is not None:
+            print('mean = {0:.2f}, min = {1:.2f}, max = {2:.2f}'.format(self.features[feature].mean(),self.features[feature].min(), self.features[feature].max()))
+        else:
+            for feature in self.features:
+            print('mean = {0:.2f}, min = {1:.2f}, max = {2:.2f}'.format(self.features[feature].mean(),self.features[feature].min(), self.features[feature].max()))
+
 
     def equals(self, other, drop_col=None, print_some=False):
         dat_self = self.features.drop(drop_col, axis=1) if drop_col else self.features

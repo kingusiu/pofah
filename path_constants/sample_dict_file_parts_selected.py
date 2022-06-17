@@ -22,8 +22,12 @@ update_dict = {
                 'GtoWW45naReco': '',
                 'GtoWW45brReco': '',
                 # prepared train and test split data for QR training
-                'qcdSigAllTrainReco': '',
-                'qcdSigAllTestReco': '',
+                'qcdSigAllTrain20pct': '',
+                'qcdSigAllTest80pct': '',
+                'qcdSigAllTrain70pct': '',
+                'qcdSigAllTest30pct': '',
+                'qcdSigAllTrain50pct': '',
+                'qcdSigAllTest50pct': ''
     },
 
 }
