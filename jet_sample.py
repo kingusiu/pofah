@@ -32,8 +32,8 @@ class JetSample():
         return cls(name, df)
 
     @classmethod
-    def from_input_file(cls, name, path, **cuts):
-        df = dr.DataReader(path).read_jet_features_from_file(features_to_df=True, **cuts)
+    def from_input_file(cls, name, path, read_n=None, **cuts):
+        df = dr.DataReader(path).read_jet_features_from_file(read_n=read_n, features_to_df=True, **cuts)
         # convert any QR-selection colums from 0/1 to bool
         sel_cols = [c for c in df if c.startswith('sel')]
         for sel in sel_cols:  # convert selection column to bool
@@ -94,6 +94,11 @@ class JetSample():
         cls = type(self)
         new_dat = self.features.sample(n=n)
         return cls(name=self.name+'_sampled', features=new_dat, title=' '.join([self.title,'sampled']) )
+
+
+    def shuffle(self):
+        self.features = self.features.sample(frac=1).reset_index(drop=True)
+        return self
 
 
     def merge(self, other, shuffle=True):
@@ -162,7 +167,7 @@ class JetSample():
     def dump(self, path):
         dump_data = self._convert_data_for_dump()        
         rw.write_jet_sample_to_file(dump_data.values, list(dump_data.columns), path)
-        print('written data sample to {}'.format(path))
+        print('written data sample with {} events to {}'.format(len(dump_data), path))
         
     def __repr__(self):
         return self.name
