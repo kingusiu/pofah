@@ -188,6 +188,9 @@ class JetSampleLatent(JetSample):
         if latent_key is not None:
             self.latent_reps[latent_key] = latent_data
 
+    def __len__(self):
+        return len(self.features) or len(list(self.latent_reps.values())[0])
+    
 
     @classmethod
     def from_input_file(cls, name, path, latent_key='latent_ae', read_n=None, **cuts):
