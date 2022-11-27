@@ -23,7 +23,7 @@ class JetSample():
             title = string used for plot titles
         '''
         self.name = name
-        self.features = features or pd.DataFrame() # assuming data passed as dataframe
+        self.features = features if features is not None else pd.DataFrame() # assuming data passed as dataframe
         self.title = title or name
 
     @classmethod
@@ -182,18 +182,16 @@ class JetSampleLatent(JetSample):
         jet sample class with latent space features
     """
 
-    def __init__(self, name, features, latent_key=None, latent_data=None, title=None):
+    def __init__(self, name, features, latent_data=None, title=None):
         '''
             features: pandas dataframe or numpy array
             latent_data = numpy array
         '''
         super(JetSampleLatent, self).__init__(name=name, features=features, title=title)
-        self.latent_reps = {}
-        if latent_key is not None:
-            self.latent_reps[latent_key] = latent_data
+        self.latent_rep = latent_data # N x 2 x Z
 
     def __len__(self):
-        return len(self.features) or len(list(self.latent_reps.values())[0])
+        return len(self.features) or len(self.latent_rep)
     
 
     @classmethod
@@ -205,42 +203,38 @@ class JetSampleLatent(JetSample):
             df[sel] = df[sel].astype(bool)
         # read latent representation data-structure
         ff = h5py.File(path,'r')
-        import ipdb; ipdb.set_trace()
         latent_data = np.array(ff.get(latent_key))[:read_n]
         return cls(name=name, features=df, latent_key=latent_key, latent_data=latent_data)
 
 
-    def add_latent_representation(self, latent_rep, latent_key='latent_ae'):
+    def add_latent_representation(self, latent_rep):
 
         '''
             add latent represenation to jet sample (from autoencoding, pca, etc)
             :param latent_rep: numpy ndarray with latent space representation of size [N_sample x 2 jets x k latent features]
         '''
 
-        self.latent_reps[latent_key] = latent_rep
+        self.latent_rep = latent_rep
 
         return self
 
-    def get_latent_representation(self, latent_key='latent_ae', per_jet=True):
+    def get_latent_representation(self, per_jet=True):
 
-        try:
-            if per_jet:
-                return self.latent_reps[latent_key][:,0,:], self.latent_reps[latent_key][:,1,:] 
-            return self.latent_reps[latent_key]
-        except KeyError as e:
-            print('Error: no latent representation for ' + latent_key + ' stored in sample')
-            return np.empty()
+        if per_jet:
+            return self.latent_rep[:,0,:], self.latent_rep[:,1,:] 
+        return self.latent_rep
 
 
     def copy(self, latent_key='latent_ae'):
+        cls = type(self)
         features_copy = self.features.copy()
-        latent_data_copy = self.latent_reps[latent_key].copy()
-        return cls(name=self.name, features=features_copy, latent_key=latent_key, latent_data=latent_data_copy)
+        latent_rep_copy = self.latent_rep.copy()
+        return cls(name=self.name, features=features_copy, latent_key=latent_key, latent_data=latent_rep_copy)
 
 
     def dump(self, path):
         dump_data = self._convert_data_for_dump()
-        rw.write_jet_sample_latent_to_file(dump_data.values, list(dump_data.columns), self.latent_reps, path)
+        rw.write_jet_sample_latent_to_file(dump_data.values, list(dump_data.columns), self.latent_rep, path)
         print('written data sample to {}'.format(path))
         
 
