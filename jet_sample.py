@@ -23,7 +23,7 @@ class JetSample():
             title = string used for plot titles
         '''
         self.name = name
-        self.features = features # assuming data passed as dataframe
+        self.features = features or pd.DataFrame() # assuming data passed as dataframe
         self.title = title or name
 
     @classmethod
@@ -183,6 +183,10 @@ class JetSampleLatent(JetSample):
     """
 
     def __init__(self, name, features, latent_key=None, latent_data=None, title=None):
+        '''
+            features: pandas dataframe or numpy array
+            latent_data = numpy array
+        '''
         super(JetSampleLatent, self).__init__(name=name, features=features, title=title)
         self.latent_reps = {}
         if latent_key is not None:
@@ -201,7 +205,9 @@ class JetSampleLatent(JetSample):
             df[sel] = df[sel].astype(bool)
         # read latent representation data-structure
         ff = h5py.File(path,'r')
-        return cls(name=name, features=df, latent_key=latent_key, latent_data=np.array(ff.get(latent_key))[:read_n])
+        import ipdb; ipdb.set_trace()
+        latent_data = np.array(ff.get(latent_key))[:read_n]
+        return cls(name=name, features=df, latent_key=latent_key, latent_data=latent_data)
 
 
     def add_latent_representation(self, latent_rep, latent_key='latent_ae'):
@@ -224,6 +230,12 @@ class JetSampleLatent(JetSample):
         except KeyError as e:
             print('Error: no latent representation for ' + latent_key + ' stored in sample')
             return np.empty()
+
+
+    def copy(self, latent_key='latent_ae'):
+        features_copy = self.features.copy()
+        latent_data_copy = self.latent_reps[latent_key].copy()
+        return cls(name=self.name, features=features_copy, latent_key=latent_key, latent_data=latent_data_copy)
 
 
     def dump(self, path):
