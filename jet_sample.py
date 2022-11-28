@@ -190,6 +190,7 @@ class JetSampleLatent(JetSample):
         super(JetSampleLatent, self).__init__(name=name, features=features, title=title)
         self.latent_rep = latent_data # N x 2 x Z
 
+
     def __len__(self):
         return len(self.features) or len(self.latent_rep)
     
@@ -204,7 +205,7 @@ class JetSampleLatent(JetSample):
         # read latent representation data-structure
         ff = h5py.File(path,'r')
         latent_data = np.array(ff.get(latent_key))[:read_n]
-        return cls(name=name, features=df, latent_key=latent_key, latent_data=latent_data)
+        return cls(name=name, features=df, latent_data=latent_data)
 
 
     def add_latent_representation(self, latent_rep):
@@ -225,11 +226,26 @@ class JetSampleLatent(JetSample):
         return self.latent_rep
 
 
-    def copy(self, latent_key='latent_ae'):
+    def filter(self, idx:Union[np.ndarray,pd.Series,slice]): # -> pofah.jet_sample.JetSampleLatent:
+        ''' slice by row
+            return filtered jet sample with events of index idx
+            idx ... numpy array (int or boolean), pandas series of booleans or slice
+        '''
+        cls = type(self)
+        if type(idx) is np.ndarray:
+            new_dat = self.features.iloc[idx]
+        else:
+            new_dat = self.features[idx]
+        new_lat = self.latent_rep[idx]
+        return cls(name=self.name, features=new_dat, latent_data=new_lat, title=' '.join([self.title,'filtered']))
+
+
+
+    def copy(self):
         cls = type(self)
         features_copy = self.features.copy()
         latent_rep_copy = self.latent_rep.copy()
-        return cls(name=self.name, features=features_copy, latent_key=latent_key, latent_data=latent_rep_copy)
+        return cls(name=self.name, features=features_copy, latent_data=latent_rep_copy)
 
 
     def dump(self, path):
